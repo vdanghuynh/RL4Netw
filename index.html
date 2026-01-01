@@ -361,25 +361,28 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto">
         <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="mb-8 flex justify-center">
-                <img src="https://en.uit.edu.vn/sites/vi/files/banner_en.png" alt="UIT Banner" class="max-h-20 w-auto object-contain">
-            </div>
-            
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <!-- Instructor Info -->
-                <div class="text-center md:text-left">
-                    <p class="font-bold text-slate-800">Dr. Dang Van Huynh</p>
-                    <p class="text-sm text-slate-500">Department of Computer Networks</p>
-                    <p class="text-sm text-slate-500">Faculty of Computer Networks and Communications</p>
-                    <a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline">danghv@uit.edu.vn</a>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
+                
+                <!-- 1. Course Identity (Left) -->
+                <div class="flex flex-col items-center md:items-start">
+                    <p class="text-2xl font-bold text-uit-primary tracking-tight">NT549</p>
+                    <p class="text-sm font-medium text-slate-600 italic mt-1">"Bridging the gap between modern AI and Network Engineering."</p>
+                    <p class="text-xs text-slate-400 mt-2">© 2026 VNUHCM-UIT</p>
                 </div>
 
-                <!-- Course Signature -->
-                <div class="text-center md:text-right">
-                    <p class="text-lg font-bold text-uit-primary">NT549</p>
-                    <p class="text-sm font-medium text-slate-700 italic">"Bridging the gap between modern AI and Network Engineering."</p>
-                    <p class="text-xs text-slate-400 mt-2">© 2026 VNUHCM - University of Information Technology</p>
+                <!-- 2. UIT Banner (Center) -->
+                <div class="flex justify-center">
+                    <img src="https://en.uit.edu.vn/sites/vi/files/banner_en.png" alt="UIT Banner" class="h-16 w-auto object-contain">
                 </div>
+
+                <!-- 3. Instructor Info (Right) -->
+                <div class="flex flex-col items-center md:items-end text-center md:text-right">
+                    <p class="font-bold text-slate-800 text-lg">Dr. Dang Van Huynh</p>
+                    <p class="text-sm text-slate-500">Dept. of Computer Networks</p>
+                    <p class="text-sm text-slate-500">Faculty of Computer Networks & Comm.</p>
+                    <a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline font-medium mt-1">danghv@uit.edu.vn</a>
+                </div>
+
             </div>
         </div>
     </footer>
