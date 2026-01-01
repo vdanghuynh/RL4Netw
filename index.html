@@ -1,584 +1,568 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NT549: Reinforcement Learning for Networked Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: UIT Blue (Academic/Tech) -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }
+        
+        /* UIT Blue Palette */
+        .bg-uit-primary { background-color: #005a8d; } /* Main Blue */
+        .text-uit-primary { color: #005a8d; }
+        .bg-uit-secondary { background-color: #0ea5e9; } /* Lighter Blue */
+        .bg-uit-light { background-color: #e0f2fe; }
+        .border-uit-light { border-color: #bae6fd; }
+        .hover-uit-primary:hover { background-color: #004972; }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 300px;
+        }
+
+        /* Timeline Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+
+        .active-week {
+            border-left: 4px solid #005a8d;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        
+        .inactive-week {
+            border-left: 4px solid transparent;
+        }
+        .inactive-week:hover { background-color: #f1f5f9; }
+
+        /* Tab Active State */
+        .tab-active {
+            border-bottom: 2px solid #005a8d;
+            color: #005a8d;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-bottom: 2px solid transparent;
+            color: #64748b;
+        }
+        .tab-inactive:hover { color: #005a8d; }
+        
+        .lifecycle-step {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #e2e8f0;
+        }
+        .lifecycle-step::before {
+            content: '';
+            position: absolute;
+            left: -0.4rem;
+            top: 0.4rem;
+            width: 0.8rem;
+            height: 0.8rem;
+            background: #fff;
+            border: 2px solid #005a8d;
+            border-radius: 50%;
+        }
+
+        /* Filter Buttons */
+        .filter-btn {
+            transition: all 0.2s;
+        }
+        .filter-btn.active {
+            background-color: #005a8d;
+            color: white;
+            border-color: #005a8d;
+        }
+        .filter-btn:not(.active) {
+            background-color: white;
+            color: #64748b;
+            border-color: #e2e8f0;
+        }
+        .filter-btn:not(.active):hover {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+    </style>
 </head>
-<body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;NT549: Reinforcement Learning for Networked Systems&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: UIT Blue (Academic/Tech) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* UIT Blue Palette */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.bg-uit-primary { background-color: #005a8d; } /* Main Blue */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.text-uit-primary { color: #005a8d; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.bg-uit-secondary { background-color: #0ea5e9; } /* Lighter Blue */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.bg-uit-light { background-color: #e0f2fe; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.border-uit-light { border-color: #bae6fd; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.hover-uit-primary:hover { background-color: #004972; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Chart Container */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 500px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-right: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 300px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-height: 300px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Timeline Scrollbar */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.custom-scroll::-webkit-scrollbar { width: 6px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.active-week {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid #005a8d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.inactive-week {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid transparent;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.inactive-week:hover { background-color: #f1f5f9; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Tab Active State */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 2px solid #005a8d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #005a8d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-inactive {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 2px solid transparent;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #64748b;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-inactive:hover { color: #005a8d; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.lifecycle-step {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 2px solid #e2e8f0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.lifecycle-step::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: -0.4rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0.4rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 0.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 0.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #005a8d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Filter Buttons */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-btn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-btn.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #005a8d;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #005a8d;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-btn:not(.active) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #64748b;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #e2e8f0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter-btn:not(.active):hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f1f5f9;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #334155;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body class="bg-slate-50 min-h-screen flex flex-col"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Header --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="max-w-7xl mx-auto px-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="py-4 flex justify-between items-center flex-wrap gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- UIT Logo --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="https://en.uit.edu.vn/sites/vi/files/uit20-06.png" alt="UIT Logo" class="h-14 w-auto object-contain"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h1 class="text-2xl font-bold text-slate-800 tracking-tight leading-none"&gt;NT549 &lt;span class="text-uit-primary font-light"&gt;| Reinforcement Learning for Networked Systems&lt;/span&gt;&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm text-slate-500 mt-1"&gt;Dr. Dang Van Huynh • VNUHCM-UIT&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="hidden md:block text-right"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs font-bold text-uit-primary uppercase tracking-wider"&gt;Spring Semester 2026&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-400"&gt;Department of Computer Networks&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Navigation Tabs --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;nav class="flex gap-8 mt-4 overflow-x-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="switchView('schedule')" id="tab-schedule" class="tab-active pb-3 px-1 text-sm transition-colors whitespace-nowrap"&gt;Course Schedule&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="switchView('projects')" id="tab-projects" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap"&gt;Capstone Projects&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="switchView('grading')" id="tab-grading" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap"&gt;Grading &amp; Analytics&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/nav&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Main Content Area --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- VIEW 1: SCHEDULE (Timeline + Detail) --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="view-schedule" class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Left: Timeline --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="lg:col-span-4 flex flex-col gap-4 h-[calc(100vh-12rem)] sticky top-36"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm shrink-0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h2 class="font-bold text-slate-800"&gt;Weekly Timeline&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-500"&gt;Navigate through the 15-week curriculum.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="custom-scroll overflow-y-auto pr-2 space-y-4 pb-10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="syllabus-timeline"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Right: Detail Panel + Project Lifecycle Instructions --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="lg:col-span-8 flex flex-col gap-6"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Weekly Detail Panel --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="detail-panel" class="bg-white rounded-xl border border-slate-200 shadow-sm min-h-[400px] transition-all duration-300"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- Default Landing Content: Official Course Description --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="bg-uit-light text-uit-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wide"&gt;Course Overview&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h2 class="text-3xl font-bold text-slate-900 mt-3"&gt;Welcome to NT549&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-slate-600 mt-4 leading-relaxed text-lg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques. Emphasising practical implementation and conceptual understanding, the course prepares students to design and evaluate RL-based solutions for networked systems.</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                        </span></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h3 class="text-uit-primary font-bold mb-2"&gt;CLO1: Theory&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-slate-600"&gt;Formulate network problems as MDPs (States, Actions, Rewards).&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h3 class="text-uit-primary font-bold mb-2"&gt;CLO2: Algorithms&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-sm text-slate-600"&gt;Implement Q-Learning, DQN, and PPO using PyTorch.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Project Lifecycle Instructions Box --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex items-center gap-3 mb-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div class="p-2 bg-uit-light rounded-lg text-uit-primary"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"&gt;&lt;/path&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;h3 class="text-xl font-bold text-slate-900"&gt;Project Lifecycle Guidelines&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>&lt;p class="text-xs text-slate-500"&gt;General steps for the Capstone Phase (Weeks 11-15)&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lifecycle-step"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-uit-primary text-sm uppercase mb-1"&gt;Phase 1: Proposal &amp; Definition&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-slate-600 mb-2"&gt;Teams must present their problem statement. Define the &lt;strong&gt;State Space&lt;/strong&gt;, &lt;strong&gt;Action Space&lt;/strong&gt;, and &lt;strong&gt;Reward Function&lt;/strong&gt; clearly.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded"&gt;Deliverable: 1-page PDF&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lifecycle-step"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-uit-primary text-sm uppercase mb-1"&gt;Phase 2: Environment Design&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-slate-600 mb-2"&gt;Showcase a runnable &lt;code&gt;gymnasium&lt;/code&gt; environment. A random agent must be able to interact without crashing.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded"&gt;Activity: Code Walkthrough&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lifecycle-step"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-uit-primary text-sm uppercase mb-1"&gt;Phase 3: Baselines&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-slate-600 mb-2"&gt;Compare your RL agent against standard algorithms (e.g., Round Robin, OSPF, TCP Vegas). Show preliminary reward plots.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lifecycle-step"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-uit-primary text-sm uppercase mb-1"&gt;Phase 4: Tuning &amp; Optimization&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-slate-600 mb-2"&gt;Address convergence issues. Discuss hyperparameter tuning (learning rate, discount factor) and reward shaping.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lifecycle-step border-l-0 pl-8 relative"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="absolute left-[-0.4rem] top-1 w-3 h-3 bg-uit-primary rounded-full"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-bold text-slate-900 text-sm uppercase mb-1"&gt;Phase 5: Final Defense&lt;/h4&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-slate-600"&gt;Final group presentation and live demo. Evaluation based on Complexity, Methodology, and Performance.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- VIEW 2: CAPSTONE PROJECTS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="view-projects" class="hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h2 class="text-2xl font-bold text-slate-900"&gt;Capstone Projects&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-slate-500 text-sm mt-1"&gt;Select a topic by domain or propose a custom problem.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Filter Buttons --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100" id="project-filters"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('All', this)"&gt;All Projects&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('SDN', this)"&gt;SDN &amp; Traffic&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Cloud', this)"&gt;Cloud &amp; DC&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Edge', this)"&gt;Edge &amp; MEC&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('IoT', this)"&gt;IoT &amp; Wireless&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Security', this)"&gt;Security&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="project-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Projects injected by JS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- VIEW 3: GRADING &amp; ANALYTICS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="view-grading" class="hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Chart 1 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-slate-800 mb-2"&gt;Assessment Weighting&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-500 mb-6"&gt;Final Grade Composition&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="chart-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;canvas id="assessmentChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Chart 2 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-slate-800 mb-2"&gt;Course Focus Area&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-500 mb-6"&gt;Weeks per Module&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="chart-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;canvas id="moduleChart"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Grade Table --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="px-6 py-4 border-b border-slate-100 bg-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-slate-800"&gt;Detailed Assessment Criteria&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;table class="w-full text-sm text-left text-slate-600"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;thead class="text-xs text-slate-700 uppercase bg-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th class="px-6 py-3"&gt;Component&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th class="px-6 py-3"&gt;Weight&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;th class="px-6 py-3"&gt;Details&lt;/th&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/thead&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr class="bg-white border-b hover:bg-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4 font-medium text-slate-900"&gt;Final Exam&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;50%&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;Theory, MDP Calculation, Algorithm Logic&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr class="bg-white border-b hover:bg-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4 font-medium text-slate-900"&gt;Capstone Project&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;20%&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;Proposal, Code, Demo, Final Report&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr class="bg-white border-b hover:bg-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4 font-medium text-slate-900"&gt;Lab Exercises&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;20%&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;5 Labs (Python/Gymnasium/Stable-Baselines3)&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tr class="bg-white hover:bg-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4 font-medium text-slate-900"&gt;Attendance&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;10%&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;td class="px-6 py-4"&gt;Active participation in workshops&lt;/td&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Footer --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer class="bg-white border-t border-slate-200 mt-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="max-w-7xl mx-auto px-4 py-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex flex-col md:flex-row justify-between items-center gap-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center md:text-left"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="font-bold text-slate-800"&gt;Dr. Dang Van Huynh&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm text-slate-500"&gt;Department of Computer Networks&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm text-slate-500"&gt;Faculty of Computer Networks and Communications&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline"&gt;danghv@uit.edu.vn&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center md:text-right"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm font-semibold text-slate-700"&gt;VNUHCM - University of Information Technology&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-400 mt-1"&gt;© 2025 NT549 Course Materials. All Rights Reserved.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- JS Logic --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// --- Data ---</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const courseData = {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>modules: [</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>id: 1,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Foundations of RL",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>weeks: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 1, title: "Introduction &amp; The RL Paradigm", theory: ["Agent-Environment Loop", "Mapping Networks to Agents"], reading: "Sutton &amp; Barto Ch. 1 &amp; 3", lab: "Grid World Manual Control" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 2, title: "MDPs in Networking", theory: ["States, Actions, Rewards, Transition", "Case Study: Task Offloading"], reading: "Zhao Ch. 1 &amp; 2", lab: "Custom Queue Environment" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 3, title: "Tabular Methods", theory: ["Monte Carlo vs TD", "Q-Learning", "Q-Routing"], reading: "Sutton &amp; Barto Ch. 6", lab: "Q-Routing Implementation" }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>id: 2,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Deep RL (DRL)",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>weeks: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 4, title: "Value-Based Deep RL (DQN)", theory: ["Neural Function Approx", "Replay Buffers", "Dynamic Spectrum Access"], reading: "Hoang et al. Ch. 3", lab: "DQN on CartPole" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 5, title: "Policy Gradients (PPO)", theory: ["Actor-Critic", "PPO Algorithm", "Congestion Control"], reading: "Sutton &amp; Barto Ch. 13", lab: "PPO Bandwidth Allocation" }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>id: 3,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Advanced Architectures",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>weeks: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 6, title: "Multi-Agent RL (MARL)", theory: ["CTDE", "IQL vs QMIX", "Multi-router Coordination"], reading: "Hoang et al. Ch. 9", lab: "PettingZoo Intro" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 7, title: "State &amp; Reward Engineering", theory: ["Reward Shaping", "POMDPs", "Flow Statistics Features"], reading: "Research Papers", lab: "Feature Engineering" }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>id: 4,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Domain Applications",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>weeks: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 8, title: "Cloud &amp; Microservices", theory: ["Auto-scaling VMs", "Pod Placement", "Load Balancing"], reading: "Hoang et al. Ch. 6", lab: "Cluster Scheduler Sim" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 9, title: "SDN &amp; Traffic Eng.", theory: ["SDN Controller as Agent", "QoS Routing", "TE Optimization"], reading: "Literature Review", lab: "Project Ideas" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 10, title: "Security &amp; Robustness", theory: ["Adversarial Attacks", "RL-based IDS", "Safe RL"], reading: "Hoang et al. Ch. 5", lab: "Robustness Testing" }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>id: 5,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Project Lifecycle",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>weeks: [</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 11, title: "Project Presentation 1", theory: ["Group Progress Report", "Milestone 1 Review"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 12, title: "Project Presentation 2", theory: ["Environment Demo", "Debugging Session"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 13, title: "Project Presentation 3", theory: ["Baseline Results", "Performance Analysis"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 14, title: "Project Presentation 4", theory: ["Optimization Strategy", "Convergence Tuning"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{ num: 15, title: "Project Presentation 5", theory: ["Final Defense", "Live System Demo"], reading: "See Lifecycle Guidelines", lab: "Final Assessment" }</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>]</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Expanded Project List</p>
-<p class="p1"><span class="Apple-converted-space">            </span>projects: [</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Intelligent SDN Routing",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Implement a Deep Q-Network (DQN) agent on a Ryu controller to optimize routing paths in Mininet, minimizing end-to-end delay under heavy traffic.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["Mininet", "Ryu", "PyTorch"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "SDN"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "DQN-Based Traffic Engineering",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Design an agent to dynamically adjust link weights or split ratios in an OSPF/MPLS network to prevent congestion.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["NS-3", "Gymnasium"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "SDN"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Kubernetes Pod Autoscaling",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Create an RL-based Horizontal Pod Autoscaler (HPA) that predicts traffic bursts and scales microservices proactively.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["SimPy", "Gymnasium"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Cloud"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "VM Placement Optimization",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Solve the Virtual Machine placement problem (Bin Packing variant) using Policy Gradients to minimize active physical servers.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["Python", "CloudSim"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Cloud"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "MEC Task Offloading",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Design an agent for mobile devices to decide whether to process tasks locally or offload to an Edge Server based on battery constraints.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["Gymnasium", "EdgeSim"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Edge"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Vehicular Service Migration",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Train an agent to migrate services between Roadside Units (RSUs) to maintain low latency connectivity for moving vehicles.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["SUMO", "Python"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Edge"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Energy-Harvesting IoT Scheduling",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Develop a policy for an IoT sensor to schedule data transmission based on predicted solar energy harvesting.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["Python", "Custom Env"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "IoT"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "LoRaWAN Parameter Optimization",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Use Multi-Armed Bandits to dynamically select Spreading Factors (SF) and Transmit Power for LoRa nodes to maximize PDR.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["NS-3", "Python"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "IoT"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Intrusion Detection System (IDS)",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Train an agent on the NSL-KDD dataset to classify network flows as 'Benign' or 'Attack', adapting to changing patterns.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["Scikit-learn", "DQN"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Security"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Adversarial Attacks on Traffic Classifiers",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Generate adversarial traffic perturbations to fool a Deep Learning-based traffic classifier and propose defense mechanisms.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["PyTorch", "CleverHans"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Security"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Adaptive Bitrate Streaming (ABR)",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Train a PPO agent to dynamically select video bitrates (360p, 720p, 1080p) to maximize QoE while minimizing rebuffering.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["Python Sim", "Stable-Baselines3"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Multimedia"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                </span>{</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>title: "Anti-Jamming Frequency Hopping",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>desc: "Simulate a wireless transmitter using Q-Learning to learn optimal frequency hopping patterns to evade a dynamic jammer.",</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>tools: ["NumPy", "Matplotlib"],</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>domain: "Security"</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>]</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// --- Logic ---</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function initApp() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderTimeline();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderProjects('All'); // Default</p>
-<p class="p1"><span class="Apple-converted-space">            </span>initCharts();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 1. Navigation</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function switchView(viewName) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>['schedule', 'projects', 'grading'].forEach(v =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById(`view-${v}`).classList.add('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById(`tab-${v}`).classList.replace('tab-active', 'tab-inactive');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(`view-${viewName}`).classList.remove('hidden');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(`tab-${viewName}`).classList.replace('tab-inactive', 'tab-active');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 2. Schedule Render</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderTimeline() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('syllabus-timeline');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>courseData.modules.forEach(mod =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const modEl = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>modEl.className = "mb-6";</p>
-<p class="p1"><span class="Apple-converted-space">                </span>modEl.innerHTML = `&lt;h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-2"&gt;Module ${mod.id}: ${mod.title}&lt;/h3&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>mod.weeks.forEach(week =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const btn = document.createElement('button');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>btn.className = "w-full text-left p-3 rounded-lg mb-2 transition-all duration-200 inactive-week group border border-slate-100";</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>btn.innerHTML = `&lt;div class="flex justify-between items-center mb-1"&gt;&lt;span class="text-xs font-bold text-uit-primary bg-uit-light px-2 py-0.5 rounded"&gt;Week ${week.num}&lt;/span&gt;&lt;/div&gt;&lt;h4 class="font-semibold text-slate-700 text-sm group-hover:text-uit-primary"&gt;${week.title}&lt;/h4&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>btn.onclick = () =&gt; showWeekDetail(week, mod.title, btn);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>modEl.appendChild(btn);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(modEl);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function showWeekDetail(week, modTitle, btn) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.querySelectorAll('.active-week').forEach(el =&gt; { el.classList.remove('active-week'); el.classList.add('inactive-week'); });</p>
-<p class="p1"><span class="Apple-converted-space">            </span>btn.classList.remove('inactive-week'); btn.classList.add('active-week');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const panel = document.getElementById('detail-panel');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>panel.style.opacity = '0';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>panel.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="p-8 h-full relative overflow-hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"&gt;&lt;span class="text-9xl font-bold text-slate-900"&gt;${week.num}&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="relative z-10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex items-center gap-2 mb-4"&gt;&lt;span class="bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded"&gt;Module&lt;/span&gt;&lt;span class="text-slate-500 text-sm font-medium uppercase"&gt;${modTitle}&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h2 class="text-3xl font-bold text-slate-800 mb-6"&gt;${week.title}&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="space-y-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;&lt;h3 class="font-bold text-uit-primary mb-2 flex items-center gap-2"&gt;Activity Focus&lt;/h3&gt;&lt;ul class="list-disc pl-5 space-y-1 text-slate-600"&gt;${week.theory.map(t =&gt; `&lt;li&gt;${t}&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="bg-orange-50 p-4 rounded border border-orange-100"&gt;&lt;span class="text-xs font-bold text-orange-600 uppercase"&gt;Preparation&lt;/span&gt;&lt;p class="text-slate-800 font-medium"&gt;${week.reading}&lt;/p&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="bg-blue-50 p-4 rounded border border-blue-100"&gt;&lt;span class="text-xs font-bold text-blue-600 uppercase"&gt;Lab / Deliverable&lt;/span&gt;&lt;p class="text-slate-800 font-medium"&gt;${week.lab}&lt;/p&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>panel.style.opacity = '1';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}, 150);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 3. Project Filter Logic</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function getDomainStyle(domain) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const styles = {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>'SDN': 'bg-blue-100 text-blue-700 border-blue-200',</p>
-<p class="p1"><span class="Apple-converted-space">                </span>'Cloud': 'bg-purple-100 text-purple-700 border-purple-200',</p>
-<p class="p1"><span class="Apple-converted-space">                </span>'Edge': 'bg-orange-100 text-orange-700 border-orange-200',</p>
-<p class="p1"><span class="Apple-converted-space">                </span>'Security': 'bg-red-100 text-red-700 border-red-200',</p>
-<p class="p1"><span class="Apple-converted-space">                </span>'IoT': 'bg-emerald-100 text-emerald-700 border-emerald-200',</p>
-<p class="p1"><span class="Apple-converted-space">                </span>'Multimedia': 'bg-pink-100 text-pink-700 border-pink-200'</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return styles[domain] || 'bg-slate-100 text-slate-700 border-slate-200';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function filterProjects(category, btnElement) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>// Update UI</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (btnElement) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.querySelectorAll('.filter-btn').forEach(b =&gt; b.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>btnElement.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>renderProjects(category);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function renderProjects(category) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('project-grid');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = ''; // Clear existing</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const filtered = category === 'All'<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>? courseData.projects<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>: courseData.projects.filter(p =&gt; p.domain.includes(category) || (category === 'IoT' &amp;&amp; p.domain === 'Multimedia')); // Include multimedia in IoT/Wireless for simplicity or keep separate</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>filtered.forEach(p =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const domainStyle = getDomainStyle(p.domain);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const card = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>card.className = "bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition group flex flex-col h-full animate-fade-in";</p>
-<p class="p1"><span class="Apple-converted-space">                </span>card.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex justify-between items-start mb-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="${domainStyle} text-xs font-bold px-2 py-1 rounded border"&gt;${p.domain}&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="font-bold text-slate-900 text-lg mb-2 leading-tight"&gt;${p.title}&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-slate-600 text-sm mb-4 leading-relaxed flex-grow"&gt;${p.desc}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-50"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>${p.tools.map(t =&gt; `&lt;span class="text-xs bg-slate-50 text-slate-500 px-2 py-1 rounded border border-slate-100"&gt;${t}&lt;/span&gt;`).join('')}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>container.appendChild(card);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 4. Charts</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function initCharts() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>new Chart(document.getElementById('assessmentChart'), { type: 'doughnut', data: { labels: ['Final Exam', 'Project', 'Labs', 'Attendance'], datasets: [{ data: [50, 20, 20, 10], backgroundColor: ['#005a8d', '#0ea5e9', '#38bdf8', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });</p>
-<p class="p1"><span class="Apple-converted-space">            </span>new Chart(document.getElementById('moduleChart'), { type: 'bar', data: { labels: ['M1', 'M2', 'M3', 'M4', 'M5'], datasets: [{ label: 'Weeks', data: [3, 2, 2, 3, 5], backgroundColor: '#0ea5e9', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', initApp);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="py-4 flex justify-between items-center flex-wrap gap-4">
+                <div class="flex items-center gap-4">
+                    <!-- UIT Logo -->
+                    <img src="https://en.uit.edu.vn/sites/vi/files/uit20-06.png" alt="UIT Logo" class="h-14 w-auto object-contain">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-800 tracking-tight leading-none">NT549 <span class="text-uit-primary font-light">| Reinforcement Learning for Networked Systems</span></h1>
+                        <p class="text-sm text-slate-500 mt-1">Dr. Dang Van Huynh • VNUHCM-UIT</p>
+                    </div>
+                </div>
+                <div class="hidden md:block text-right">
+                    <p class="text-xs font-bold text-uit-primary uppercase tracking-wider">Spring Semester 2026</p>
+                    <p class="text-xs text-slate-400">Department of Computer Networks</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <nav class="flex gap-8 mt-4 overflow-x-auto">
+                <button onclick="switchView('schedule')" id="tab-schedule" class="tab-active pb-3 px-1 text-sm transition-colors whitespace-nowrap">Course Schedule</button>
+                <button onclick="switchView('projects')" id="tab-projects" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Capstone Projects</button>
+                <button onclick="switchView('grading')" id="tab-grading" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Grading & Analytics</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+        
+        <!-- VIEW 1: SCHEDULE (Timeline + Detail) -->
+        <div id="view-schedule" class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in">
+            <!-- Left: Timeline -->
+            <div class="lg:col-span-4 flex flex-col gap-4 h-[calc(100vh-12rem)] sticky top-36">
+                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm shrink-0">
+                    <h2 class="font-bold text-slate-800">Weekly Timeline</h2>
+                    <p class="text-xs text-slate-500">Navigate through the 15-week curriculum.</p>
+                </div>
+                <div class="custom-scroll overflow-y-auto pr-2 space-y-4 pb-10">
+                    <div id="syllabus-timeline"></div>
+                </div>
+            </div>
+
+            <!-- Right: Detail Panel + Project Lifecycle Instructions -->
+            <div class="lg:col-span-8 flex flex-col gap-6">
+                
+                <!-- Weekly Detail Panel -->
+                <div id="detail-panel" class="bg-white rounded-xl border border-slate-200 shadow-sm min-h-[400px] transition-all duration-300">
+                    <!-- Default Landing Content: Official Course Description -->
+                    <div class="p-8">
+                        <div class="mb-8">
+                            <span class="bg-uit-light text-uit-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Course Overview</span>
+                            <h2 class="text-3xl font-bold text-slate-900 mt-3">Welcome to NT549</h2>
+                            <p class="text-slate-600 mt-4 leading-relaxed text-lg">
+                                This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques. Emphasising practical implementation and conceptual understanding, the course prepares students to design and evaluate RL-based solutions for networked systems.
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
+                                <h3 class="text-uit-primary font-bold mb-2">CLO1: Theory</h3>
+                                <p class="text-sm text-slate-600">Formulate network problems as MDPs (States, Actions, Rewards).</p>
+                            </div>
+                            <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
+                                <h3 class="text-uit-primary font-bold mb-2">CLO2: Algorithms</h3>
+                                <p class="text-sm text-slate-600">Implement Q-Learning, DQN, and PPO using PyTorch.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Lifecycle Instructions Box -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                         <div class="p-2 bg-uit-light rounded-lg text-uit-primary">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                         </div>
+                         <div>
+                             <h3 class="text-xl font-bold text-slate-900">Project Lifecycle Guidelines</h3>
+                             <p class="text-xs text-slate-500">General steps for the Capstone Phase (Weeks 11-15)</p>
+                         </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="lifecycle-step">
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 1: Proposal & Definition</h4>
+                            <p class="text-sm text-slate-600 mb-2">Teams must present their problem statement. Define the <strong>State Space</strong>, <strong>Action Space</strong>, and <strong>Reward Function</strong> clearly.</p>
+                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Deliverable: 1-page PDF</span>
+                        </div>
+                        <div class="lifecycle-step">
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 2: Environment Design</h4>
+                            <p class="text-sm text-slate-600 mb-2">Showcase a runnable <code>gymnasium</code> environment. A random agent must be able to interact without crashing.</p>
+                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Activity: Code Walkthrough</span>
+                        </div>
+                        <div class="lifecycle-step">
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 3: Baselines</h4>
+                            <p class="text-sm text-slate-600 mb-2">Compare your RL agent against standard algorithms (e.g., Round Robin, OSPF, TCP Vegas). Show preliminary reward plots.</p>
+                        </div>
+                        <div class="lifecycle-step">
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 4: Tuning & Optimization</h4>
+                            <p class="text-sm text-slate-600 mb-2">Address convergence issues. Discuss hyperparameter tuning (learning rate, discount factor) and reward shaping.</p>
+                        </div>
+                        <div class="lifecycle-step border-l-0 pl-8 relative">
+                            <div class="absolute left-[-0.4rem] top-1 w-3 h-3 bg-uit-primary rounded-full"></div>
+                            <h4 class="font-bold text-slate-900 text-sm uppercase mb-1">Phase 5: Final Defense</h4>
+                            <p class="text-sm text-slate-600">Final group presentation and live demo. Evaluation based on Complexity, Methodology, and Performance.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- VIEW 2: CAPSTONE PROJECTS -->
+        <div id="view-projects" class="hidden">
+            <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Capstone Projects</h2>
+                        <p class="text-slate-500 text-sm mt-1">Select a topic by domain or propose a custom problem.</p>
+                    </div>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100" id="project-filters">
+                    <button class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('All', this)">All Projects</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('SDN', this)">SDN & Traffic</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Cloud', this)">Cloud & DC</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Edge', this)">Edge & MEC</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('IoT', this)">IoT & Wireless</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Security', this)">Security</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="project-grid">
+                <!-- Projects injected by JS -->
+            </div>
+        </div>
+
+        <!-- VIEW 3: GRADING & ANALYTICS -->
+        <div id="view-grading" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Chart 1 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 mb-2">Assessment Weighting</h3>
+                    <p class="text-xs text-slate-500 mb-6">Final Grade Composition</p>
+                    <div class="chart-container">
+                        <canvas id="assessmentChart"></canvas>
+                    </div>
+                </div>
+                <!-- Chart 2 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 mb-2">Course Focus Area</h3>
+                    <p class="text-xs text-slate-500 mb-6">Weeks per Module</p>
+                    <div class="chart-container">
+                        <canvas id="moduleChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grade Table -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                    <h3 class="font-bold text-slate-800">Detailed Assessment Criteria</h3>
+                </div>
+                <div class="p-6">
+                    <table class="w-full text-sm text-left text-slate-600">
+                        <thead class="text-xs text-slate-700 uppercase bg-slate-50">
+                            <tr>
+                                <th class="px-6 py-3">Component</th>
+                                <th class="px-6 py-3">Weight</th>
+                                <th class="px-6 py-3">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b hover:bg-slate-50">
+                                <td class="px-6 py-4 font-medium text-slate-900">Final Exam</td>
+                                <td class="px-6 py-4">50%</td>
+                                <td class="px-6 py-4">Theory, MDP Calculation, Algorithm Logic</td>
+                            </tr>
+                            <tr class="bg-white border-b hover:bg-slate-50">
+                                <td class="px-6 py-4 font-medium text-slate-900">Capstone Project</td>
+                                <td class="px-6 py-4">20%</td>
+                                <td class="px-6 py-4">Proposal, Code, Demo, Final Report</td>
+                            </tr>
+                            <tr class="bg-white border-b hover:bg-slate-50">
+                                <td class="px-6 py-4 font-medium text-slate-900">Lab Exercises</td>
+                                <td class="px-6 py-4">20%</td>
+                                <td class="px-6 py-4">5 Labs (Python/Gymnasium/Stable-Baselines3)</td>
+                            </tr>
+                            <tr class="bg-white hover:bg-slate-50">
+                                <td class="px-6 py-4 font-medium text-slate-900">Attendance</td>
+                                <td class="px-6 py-4">10%</td>
+                                <td class="px-6 py-4">Active participation in workshops</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <p class="font-bold text-slate-800">Dr. Dang Van Huynh</p>
+                    <p class="text-sm text-slate-500">Department of Computer Networks</p>
+                    <p class="text-sm text-slate-500">Faculty of Computer Networks and Communications</p>
+                    <a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline">danghv@uit.edu.vn</a>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-sm font-semibold text-slate-700">VNUHCM - University of Information Technology</p>
+                    <p class="text-xs text-slate-400 mt-1">© 2025 NT549 Course Materials. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        // --- Data ---
+        const courseData = {
+            modules: [
+                {
+                    id: 1,
+                    title: "Foundations of RL",
+                    weeks: [
+                        { num: 1, title: "Introduction & The RL Paradigm", theory: ["Agent-Environment Loop", "Mapping Networks to Agents"], reading: "Sutton & Barto Ch. 1 & 3", lab: "Grid World Manual Control" },
+                        { num: 2, title: "MDPs in Networking", theory: ["States, Actions, Rewards, Transition", "Case Study: Task Offloading"], reading: "Zhao Ch. 1 & 2", lab: "Custom Queue Environment" },
+                        { num: 3, title: "Tabular Methods", theory: ["Monte Carlo vs TD", "Q-Learning", "Q-Routing"], reading: "Sutton & Barto Ch. 6", lab: "Q-Routing Implementation" }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Deep RL (DRL)",
+                    weeks: [
+                        { num: 4, title: "Value-Based Deep RL (DQN)", theory: ["Neural Function Approx", "Replay Buffers", "Dynamic Spectrum Access"], reading: "Hoang et al. Ch. 3", lab: "DQN on CartPole" },
+                        { num: 5, title: "Policy Gradients (PPO)", theory: ["Actor-Critic", "PPO Algorithm", "Congestion Control"], reading: "Sutton & Barto Ch. 13", lab: "PPO Bandwidth Allocation" }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Advanced Architectures",
+                    weeks: [
+                        { num: 6, title: "Multi-Agent RL (MARL)", theory: ["CTDE", "IQL vs QMIX", "Multi-router Coordination"], reading: "Hoang et al. Ch. 9", lab: "PettingZoo Intro" },
+                        { num: 7, title: "State & Reward Engineering", theory: ["Reward Shaping", "POMDPs", "Flow Statistics Features"], reading: "Research Papers", lab: "Feature Engineering" }
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Domain Applications",
+                    weeks: [
+                        { num: 8, title: "Cloud & Microservices", theory: ["Auto-scaling VMs", "Pod Placement", "Load Balancing"], reading: "Hoang et al. Ch. 6", lab: "Cluster Scheduler Sim" },
+                        { num: 9, title: "SDN & Traffic Eng.", theory: ["SDN Controller as Agent", "QoS Routing", "TE Optimization"], reading: "Literature Review", lab: "Project Ideas" },
+                        { num: 10, title: "Security & Robustness", theory: ["Adversarial Attacks", "RL-based IDS", "Safe RL"], reading: "Hoang et al. Ch. 5", lab: "Robustness Testing" }
+                    ]
+                },
+                {
+                    id: 5,
+                    title: "Project Lifecycle",
+                    weeks: [
+                        { num: 11, title: "Project Presentation 1", theory: ["Group Progress Report", "Milestone 1 Review"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 12, title: "Project Presentation 2", theory: ["Environment Demo", "Debugging Session"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 13, title: "Project Presentation 3", theory: ["Baseline Results", "Performance Analysis"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 14, title: "Project Presentation 4", theory: ["Optimization Strategy", "Convergence Tuning"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 15, title: "Project Presentation 5", theory: ["Final Defense", "Live System Demo"], reading: "See Lifecycle Guidelines", lab: "Final Assessment" }
+                    ]
+                }
+            ],
+            // Expanded Project List
+            projects: [
+                {
+                    title: "Intelligent SDN Routing",
+                    desc: "Implement a Deep Q-Network (DQN) agent on a Ryu controller to optimize routing paths in Mininet, minimizing end-to-end delay under heavy traffic.",
+                    tools: ["Mininet", "Ryu", "PyTorch"],
+                    domain: "SDN"
+                },
+                {
+                    title: "DQN-Based Traffic Engineering",
+                    desc: "Design an agent to dynamically adjust link weights or split ratios in an OSPF/MPLS network to prevent congestion.",
+                    tools: ["NS-3", "Gymnasium"],
+                    domain: "SDN"
+                },
+                {
+                    title: "Kubernetes Pod Autoscaling",
+                    desc: "Create an RL-based Horizontal Pod Autoscaler (HPA) that predicts traffic bursts and scales microservices proactively.",
+                    tools: ["SimPy", "Gymnasium"],
+                    domain: "Cloud"
+                },
+                {
+                    title: "VM Placement Optimization",
+                    desc: "Solve the Virtual Machine placement problem (Bin Packing variant) using Policy Gradients to minimize active physical servers.",
+                    tools: ["Python", "CloudSim"],
+                    domain: "Cloud"
+                },
+                {
+                    title: "MEC Task Offloading",
+                    desc: "Design an agent for mobile devices to decide whether to process tasks locally or offload to an Edge Server based on battery constraints.",
+                    tools: ["Gymnasium", "EdgeSim"],
+                    domain: "Edge"
+                },
+                {
+                    title: "Vehicular Service Migration",
+                    desc: "Train an agent to migrate services between Roadside Units (RSUs) to maintain low latency connectivity for moving vehicles.",
+                    tools: ["SUMO", "Python"],
+                    domain: "Edge"
+                },
+                {
+                    title: "Energy-Harvesting IoT Scheduling",
+                    desc: "Develop a policy for an IoT sensor to schedule data transmission based on predicted solar energy harvesting.",
+                    tools: ["Python", "Custom Env"],
+                    domain: "IoT"
+                },
+                {
+                    title: "LoRaWAN Parameter Optimization",
+                    desc: "Use Multi-Armed Bandits to dynamically select Spreading Factors (SF) and Transmit Power for LoRa nodes to maximize PDR.",
+                    tools: ["NS-3", "Python"],
+                    domain: "IoT"
+                },
+                {
+                    title: "Intrusion Detection System (IDS)",
+                    desc: "Train an agent on the NSL-KDD dataset to classify network flows as 'Benign' or 'Attack', adapting to changing patterns.",
+                    tools: ["Scikit-learn", "DQN"],
+                    domain: "Security"
+                },
+                {
+                    title: "Adversarial Attacks on Traffic Classifiers",
+                    desc: "Generate adversarial traffic perturbations to fool a Deep Learning-based traffic classifier and propose defense mechanisms.",
+                    tools: ["PyTorch", "CleverHans"],
+                    domain: "Security"
+                },
+                {
+                    title: "Adaptive Bitrate Streaming (ABR)",
+                    desc: "Train a PPO agent to dynamically select video bitrates (360p, 720p, 1080p) to maximize QoE while minimizing rebuffering.",
+                    tools: ["Python Sim", "Stable-Baselines3"],
+                    domain: "Multimedia"
+                },
+                {
+                    title: "Anti-Jamming Frequency Hopping",
+                    desc: "Simulate a wireless transmitter using Q-Learning to learn optimal frequency hopping patterns to evade a dynamic jammer.",
+                    tools: ["NumPy", "Matplotlib"],
+                    domain: "Security"
+                }
+            ]
+        };
+
+        // --- Logic ---
+        
+        function initApp() {
+            renderTimeline();
+            renderProjects('All'); // Default
+            initCharts();
+        }
+
+        // 1. Navigation
+        function switchView(viewName) {
+            ['schedule', 'projects', 'grading'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                document.getElementById(`tab-${v}`).classList.replace('tab-active', 'tab-inactive');
+            });
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            document.getElementById(`tab-${viewName}`).classList.replace('tab-inactive', 'tab-active');
+        }
+
+        // 2. Schedule Render
+        function renderTimeline() {
+            const container = document.getElementById('syllabus-timeline');
+            courseData.modules.forEach(mod => {
+                const modEl = document.createElement('div');
+                modEl.className = "mb-6";
+                modEl.innerHTML = `<h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">Module ${mod.id}: ${mod.title}</h3>`;
+                mod.weeks.forEach(week => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left p-3 rounded-lg mb-2 transition-all duration-200 inactive-week group border border-slate-100";
+                    btn.innerHTML = `<div class="flex justify-between items-center mb-1"><span class="text-xs font-bold text-uit-primary bg-uit-light px-2 py-0.5 rounded">Week ${week.num}</span></div><h4 class="font-semibold text-slate-700 text-sm group-hover:text-uit-primary">${week.title}</h4>`;
+                    btn.onclick = () => showWeekDetail(week, mod.title, btn);
+                    modEl.appendChild(btn);
+                });
+                container.appendChild(modEl);
+            });
+        }
+
+        function showWeekDetail(week, modTitle, btn) {
+            document.querySelectorAll('.active-week').forEach(el => { el.classList.remove('active-week'); el.classList.add('inactive-week'); });
+            btn.classList.remove('inactive-week'); btn.classList.add('active-week');
+            const panel = document.getElementById('detail-panel');
+            panel.style.opacity = '0';
+            setTimeout(() => {
+                panel.innerHTML = `
+                    <div class="p-8 h-full relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><span class="text-9xl font-bold text-slate-900">${week.num}</span></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-4"><span class="bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded">Module</span><span class="text-slate-500 text-sm font-medium uppercase">${modTitle}</span></div>
+                            <h2 class="text-3xl font-bold text-slate-800 mb-6">${week.title}</h2>
+                            <div class="space-y-6">
+                                <div><h3 class="font-bold text-uit-primary mb-2 flex items-center gap-2">Activity Focus</h3><ul class="list-disc pl-5 space-y-1 text-slate-600">${week.theory.map(t => `<li>${t}</li>`).join('')}</ul></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                                    <div class="bg-orange-50 p-4 rounded border border-orange-100"><span class="text-xs font-bold text-orange-600 uppercase">Preparation</span><p class="text-slate-800 font-medium">${week.reading}</p></div>
+                                    <div class="bg-blue-50 p-4 rounded border border-blue-100"><span class="text-xs font-bold text-blue-600 uppercase">Lab / Deliverable</span><p class="text-slate-800 font-medium">${week.lab}</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                panel.style.opacity = '1';
+            }, 150);
+        }
+
+        // 3. Project Filter Logic
+        function getDomainStyle(domain) {
+            const styles = {
+                'SDN': 'bg-blue-100 text-blue-700 border-blue-200',
+                'Cloud': 'bg-purple-100 text-purple-700 border-purple-200',
+                'Edge': 'bg-orange-100 text-orange-700 border-orange-200',
+                'Security': 'bg-red-100 text-red-700 border-red-200',
+                'IoT': 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                'Multimedia': 'bg-pink-100 text-pink-700 border-pink-200'
+            };
+            return styles[domain] || 'bg-slate-100 text-slate-700 border-slate-200';
+        }
+
+        function filterProjects(category, btnElement) {
+            // Update UI
+            if (btnElement) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+            renderProjects(category);
+        }
+
+        function renderProjects(category) {
+            const container = document.getElementById('project-grid');
+            container.innerHTML = ''; // Clear existing
+            
+            const filtered = category === 'All' 
+                ? courseData.projects 
+                : courseData.projects.filter(p => p.domain.includes(category) || (category === 'IoT' && p.domain === 'Multimedia')); // Include multimedia in IoT/Wireless for simplicity or keep separate
+
+            filtered.forEach(p => {
+                const domainStyle = getDomainStyle(p.domain);
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition group flex flex-col h-full animate-fade-in";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="${domainStyle} text-xs font-bold px-2 py-1 rounded border">${p.domain}</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2 leading-tight">${p.title}</h3>
+                    <p class="text-slate-600 text-sm mb-4 leading-relaxed flex-grow">${p.desc}</p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-50">
+                        ${p.tools.map(t => `<span class="text-xs bg-slate-50 text-slate-500 px-2 py-1 rounded border border-slate-100">${t}</span>`).join('')}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 4. Charts
+        function initCharts() {
+            new Chart(document.getElementById('assessmentChart'), { type: 'doughnut', data: { labels: ['Final Exam', 'Project', 'Labs', 'Attendance'], datasets: [{ data: [50, 20, 20, 10], backgroundColor: ['#005a8d', '#0ea5e9', '#38bdf8', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
+            new Chart(document.getElementById('moduleChart'), { type: 'bar', data: { labels: ['M1', 'M2', 'M3', 'M4', 'M5'], datasets: [{ label: 'Weeks', data: [3, 2, 2, 3, 5], backgroundColor: '#0ea5e9', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
