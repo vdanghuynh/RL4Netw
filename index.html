@@ -119,7 +119,8 @@
             
             <!-- Navigation Tabs -->
             <nav class="flex gap-8 mt-4 overflow-x-auto">
-                <button onclick="switchView('schedule')" id="tab-schedule" class="tab-active pb-3 px-1 text-sm transition-colors whitespace-nowrap">Course Schedule</button>
+                <button onclick="switchView('overview')" id="tab-overview" class="tab-active pb-3 px-1 text-sm transition-colors whitespace-nowrap">Course Overview</button>
+                <button onclick="switchView('schedule')" id="tab-schedule" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Course Schedule</button>
                 <button onclick="switchView('projects')" id="tab-projects" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Capstone Projects</button>
                 <button onclick="switchView('grading')" id="tab-grading" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Grading & Analytics</button>
             </nav>
@@ -129,8 +130,78 @@
     <!-- Main Content Area -->
     <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
         
+        <!-- VIEW 0: COURSE OVERVIEW -->
+        <div id="view-overview" class="animate-fade-in">
+            <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
+                <div class="mb-10">
+                    <span class="bg-uit-light text-uit-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Introduction</span>
+                    <h2 class="text-3xl font-bold text-slate-900 mt-3">Welcome to NT549</h2>
+                    <p class="text-slate-600 mt-4 leading-relaxed text-lg">
+                        This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques. Emphasising practical implementation and conceptual understanding, the course prepares students to design and evaluate RL-based solutions for networked systems.
+                    </p>
+                </div>
+
+                <!-- CLOs -->
+                <div class="mb-10">
+                     <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-uit-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Learning Outcomes (CLOs)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
+                            <h4 class="text-uit-primary font-bold mb-2">CLO1: Theory</h4>
+                            <p class="text-sm text-slate-600">Formulate network problems (routing, offloading, access control) as Markov Decision Processes (MDPs).</p>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
+                            <h4 class="text-uit-primary font-bold mb-2">CLO2: Algorithms</h4>
+                            <p class="text-sm text-slate-600">Implement and tune fundamental RL algorithms (Q-Learning, DQN, PPO) using Python/PyTorch.</p>
+                        </div>
+                         <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
+                            <h4 class="text-uit-primary font-bold mb-2">CLO3: Application</h4>
+                            <p class="text-sm text-slate-600">Design custom Gymnasium environments representing network scenarios.</p>
+                        </div>
+                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
+                            <h4 class="text-uit-primary font-bold mb-2">CLO4: Synthesis</h4>
+                            <p class="text-sm text-slate-600">Evaluate the trade-offs between RL-based control and traditional network protocols.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- References -->
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-uit-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        Course Textbooks & References
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100">
+                             <div class="flex-shrink-0 w-12 h-16 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-xs">BOOK</div>
+                             <div>
+                                 <h4 class="font-bold text-slate-800">Reinforcement Learning: An Introduction (2nd Ed)</h4>
+                                 <p class="text-sm text-slate-500">Richard S. Sutton and Andrew G. Barto</p>
+                             </div>
+                        </li>
+                        <li class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100">
+                             <div class="flex-shrink-0 w-12 h-16 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-xs">BOOK</div>
+                             <div>
+                                 <h4 class="font-bold text-slate-800">Mathematical Foundations of Reinforcement Learning</h4>
+                                 <p class="text-sm text-slate-500">Shiyu Zhao (Springer, 2025)</p>
+                             </div>
+                        </li>
+                         <li class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100">
+                             <div class="flex-shrink-0 w-12 h-16 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-xs">BOOK</div>
+                             <div>
+                                 <h4 class="font-bold text-slate-800">Deep Reinforcement Learning for Wireless Communications and Networking</h4>
+                                 <p class="text-sm text-slate-500">Hoang et al. (IEEE Press/Wiley, 2023)</p>
+                             </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <!-- VIEW 1: SCHEDULE (Timeline + Detail) -->
-        <div id="view-schedule" class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in">
+        <div id="view-schedule" class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in hidden">
             <!-- Left: Timeline -->
             <div class="lg:col-span-4 flex flex-col gap-4 h-[calc(100vh-12rem)] sticky top-36">
                 <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm shrink-0">
@@ -147,26 +218,11 @@
                 
                 <!-- Weekly Detail Panel -->
                 <div id="detail-panel" class="bg-white rounded-xl border border-slate-200 shadow-sm min-h-[400px] transition-all duration-300">
-                    <!-- Default Landing Content: Official Course Description -->
-                    <div class="p-8">
-                        <div class="mb-8">
-                            <span class="bg-uit-light text-uit-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Course Overview</span>
-                            <h2 class="text-3xl font-bold text-slate-900 mt-3">Welcome to NT549</h2>
-                            <p class="text-slate-600 mt-4 leading-relaxed text-lg">
-                                This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques. Emphasising practical implementation and conceptual understanding, the course prepares students to design and evaluate RL-based solutions for networked systems.
-                            </p>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
-                                <h3 class="text-uit-primary font-bold mb-2">CLO1: Theory</h3>
-                                <p class="text-sm text-slate-600">Formulate network problems as MDPs (States, Actions, Rewards).</p>
-                            </div>
-                            <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
-                                <h3 class="text-uit-primary font-bold mb-2">CLO2: Algorithms</h3>
-                                <p class="text-sm text-slate-600">Implement Q-Learning, DQN, and PPO using PyTorch.</p>
-                            </div>
-                        </div>
+                    <!-- Default Landing Content (When no week selected) -->
+                    <div class="p-8 h-full flex flex-col items-center justify-center text-center text-slate-400">
+                        <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <h3 class="text-xl font-medium mb-2">Select a Week</h3>
+                        <p class="max-w-xs">Click on a week from the timeline on the left to view specific learning activities, readings, and labs.</p>
                     </div>
                 </div>
 
@@ -305,16 +361,24 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto">
         <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="mb-8 flex justify-center">
+                <img src="https://en.uit.edu.vn/sites/vi/files/banner_en.png" alt="UIT Banner" class="max-h-20 w-auto object-contain">
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <!-- Instructor Info -->
                 <div class="text-center md:text-left">
                     <p class="font-bold text-slate-800">Dr. Dang Van Huynh</p>
                     <p class="text-sm text-slate-500">Department of Computer Networks</p>
                     <p class="text-sm text-slate-500">Faculty of Computer Networks and Communications</p>
                     <a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline">danghv@uit.edu.vn</a>
                 </div>
+
+                <!-- Course Signature -->
                 <div class="text-center md:text-right">
-                    <p class="text-sm font-semibold text-slate-700">VNUHCM - University of Information Technology</p>
-                    <p class="text-xs text-slate-400 mt-1">© 2025 NT549 Course Materials. All Rights Reserved.</p>
+                    <p class="text-lg font-bold text-uit-primary">NT549</p>
+                    <p class="text-sm font-medium text-slate-700 italic">"Bridging the gap between modern AI and Network Engineering."</p>
+                    <p class="text-xs text-slate-400 mt-2">© 2026 VNUHCM - University of Information Technology</p>
                 </div>
             </div>
         </div>
@@ -363,11 +427,11 @@
                     id: 5,
                     title: "Project Lifecycle",
                     weeks: [
-                        { num: 11, title: "Project Presentation 1", theory: ["Group Progress Report", "Milestone 1 Review"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
-                        { num: 12, title: "Project Presentation 2", theory: ["Environment Demo", "Debugging Session"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
-                        { num: 13, title: "Project Presentation 3", theory: ["Baseline Results", "Performance Analysis"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
-                        { num: 14, title: "Project Presentation 4", theory: ["Optimization Strategy", "Convergence Tuning"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
-                        { num: 15, title: "Project Presentation 5", theory: ["Final Defense", "Live System Demo"], reading: "See Lifecycle Guidelines", lab: "Final Assessment" }
+                        { num: 11, title: "Project Presentation 1", theory: ["Presentation", "Demonstration", "Q&A"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 12, title: "Project Presentation 2", theory: ["Presentation", "Demonstration", "Q&A"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 13, title: "Project Presentation 3", theory: ["Presentation", "Demonstration", "Q&A"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 14, title: "Project Presentation 4", theory: ["Presentation", "Demonstration", "Q&A"], reading: "See Lifecycle Guidelines", lab: "In-class Presentation" },
+                        { num: 15, title: "Project Presentation 5", theory: ["Presentation", "Demonstration", "Q&A"], reading: "See Lifecycle Guidelines", lab: "Final Assessment" }
                     ]
                 }
             ],
@@ -454,16 +518,26 @@
             renderTimeline();
             renderProjects('All'); // Default
             initCharts();
+            // Start on Overview tab
+            switchView('overview');
         }
 
         // 1. Navigation
         function switchView(viewName) {
-            ['schedule', 'projects', 'grading'].forEach(v => {
-                document.getElementById(`view-${v}`).classList.add('hidden');
-                document.getElementById(`tab-${v}`).classList.replace('tab-active', 'tab-inactive');
+            ['overview', 'schedule', 'projects', 'grading'].forEach(v => {
+                const view = document.getElementById(`view-${v}`);
+                const tab = document.getElementById(`tab-${v}`);
+                if (view && tab) {
+                    view.classList.add('hidden');
+                    tab.classList.replace('tab-active', 'tab-inactive');
+                }
             });
-            document.getElementById(`view-${viewName}`).classList.remove('hidden');
-            document.getElementById(`tab-${viewName}`).classList.replace('tab-inactive', 'tab-active');
+            const view = document.getElementById(`view-${viewName}`);
+            const tab = document.getElementById(`tab-${viewName}`);
+            if (view && tab) {
+                view.classList.remove('hidden');
+                tab.classList.replace('tab-inactive', 'tab-active');
+            }
         }
 
         // 2. Schedule Render
