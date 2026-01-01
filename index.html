@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NT549: Reinforcement Learning for Networked Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- UPDATED: Use the UMD version of Chart.js to ensure the global 'Chart' variable is defined -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Chosen Palette: UIT Blue (Academic/Tech) -->
@@ -558,6 +559,11 @@
 
         // 4. Charts
         function initCharts() {
+            // Check if Chart is defined before attempting to use it
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js library is not loaded.');
+                return;
+            }
             new Chart(document.getElementById('assessmentChart'), { type: 'doughnut', data: { labels: ['Final Exam', 'Project', 'Labs', 'Attendance'], datasets: [{ data: [50, 20, 20, 10], backgroundColor: ['#005a8d', '#0ea5e9', '#38bdf8', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
             new Chart(document.getElementById('moduleChart'), { type: 'bar', data: { labels: ['M1', 'M2', 'M3', 'M4', 'M5'], datasets: [{ label: 'Weeks', data: [3, 2, 2, 3, 5], backgroundColor: '#0ea5e9', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
         }
