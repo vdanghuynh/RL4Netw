@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NT549: Reinforcement Learning for Networked Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- UPDATED: Use the UMD version of Chart.js to ensure the global 'Chart' variable is defined -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -14,26 +13,26 @@
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }
         
         /* UIT Blue Palette */
-        .bg-uit-primary { background-color: #005a8d; } /* Main Blue */
+        .bg-uit-primary { background-color: #005a8d; }
         .text-uit-primary { color: #005a8d; }
-        .bg-uit-secondary { background-color: #0ea5e9; } /* Lighter Blue */
+        .bg-uit-secondary { background-color: #0ea5e9; }
         .bg-uit-light { background-color: #e0f2fe; }
         .border-uit-light { border-color: #bae6fd; }
-        .hover-uit-primary:hover { background-color: #004972; }
-
-        /* Chart Container */
+        
+        /* Mobile-First Chart Container */
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 300px;
+            height: 250px; /* Smaller default for mobile */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
         }
 
         /* Timeline Scrollbar */
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
 
@@ -48,7 +47,7 @@
         }
         .inactive-week:hover { background-color: #f1f5f9; }
 
-        /* Tab Active State */
+        /* Tabs */
         .tab-active {
             border-bottom: 2px solid #005a8d;
             color: #005a8d;
@@ -58,29 +57,25 @@
             border-bottom: 2px solid transparent;
             color: #64748b;
         }
-        .tab-inactive:hover { color: #005a8d; }
         
         .lifecycle-step {
             position: relative;
-            padding-left: 2rem;
+            padding-left: 1.5rem;
             border-left: 2px solid #e2e8f0;
         }
         .lifecycle-step::before {
             content: '';
             position: absolute;
-            left: -0.4rem;
+            left: -0.35rem;
             top: 0.4rem;
-            width: 0.8rem;
-            height: 0.8rem;
+            width: 0.7rem;
+            height: 0.7rem;
             background: #fff;
             border: 2px solid #005a8d;
             border-radius: 50%;
         }
 
         /* Filter Buttons */
-        .filter-btn {
-            transition: all 0.2s;
-        }
         .filter-btn.active {
             background-color: #005a8d;
             color: white;
@@ -91,108 +86,106 @@
             color: #64748b;
             border-color: #e2e8f0;
         }
-        .filter-btn:not(.active):hover {
-            background-color: #f1f5f9;
-            color: #334155;
-        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="py-4 flex justify-between items-center flex-wrap gap-4">
-                <div class="flex items-center gap-4">
-                    <!-- UIT Logo -->
-                    <img src="https://en.uit.edu.vn/sites/vi/files/uit20-06.png" alt="UIT Logo" class="h-14 w-auto object-contain">
-                    <div>
-                        <h1 class="text-2xl font-bold text-slate-800 tracking-tight leading-none">NT549 <span class="text-uit-primary font-light">| Reinforcement Learning for Networked Systems</span></h1>
-                        <p class="text-sm text-slate-500 mt-1">Dr. Dang Van Huynh • VNUHCM-UIT</p>
+            <div class="py-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-4">
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <!-- Responsive Logo Size -->
+                    <img src="https://en.uit.edu.vn/sites/vi/files/uit20-06.png" alt="UIT Logo" class="h-10 md:h-14 w-auto object-contain flex-shrink-0">
+                    <div class="min-w-0"> <!-- min-w-0 prevents flex item overflow -->
+                        <h1 class="text-lg md:text-2xl font-bold text-slate-800 tracking-tight leading-tight truncate">NT549 <span class="text-uit-primary font-light hidden sm:inline">| RL for Networked Systems</span></h1>
+                        <p class="text-xs md:text-sm text-slate-500">Dr. Dang Van Huynh • VNUHCM-UIT</p>
                     </div>
                 </div>
-                <div class="hidden md:block text-right">
+                <!-- Hide extra details on small mobile screens to save space -->
+                <div class="hidden lg:block text-right">
                     <p class="text-xs font-bold text-uit-primary uppercase tracking-wider">Spring Semester 2026</p>
                     <p class="text-xs text-slate-400">Department of Computer Networks</p>
+                    <p class="text-xs text-slate-400">Faculty of Computer Networks and Communications</p>
                 </div>
             </div>
             
-            <!-- Navigation Tabs -->
-            <nav class="flex gap-8 mt-4 overflow-x-auto">
-                <button onclick="switchView('overview')" id="tab-overview" class="tab-active pb-3 px-1 text-sm transition-colors whitespace-nowrap">Course Overview</button>
-                <button onclick="switchView('schedule')" id="tab-schedule" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Course Schedule</button>
-                <button onclick="switchView('projects')" id="tab-projects" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Capstone Projects</button>
-                <button onclick="switchView('grading')" id="tab-grading" class="tab-inactive pb-3 px-1 text-sm transition-colors whitespace-nowrap">Grading & Analytics</button>
+            <!-- Navigation Tabs (Scrollable on mobile) -->
+            <nav class="flex gap-6 mt-1 overflow-x-auto no-scrollbar pb-0">
+                <button onclick="switchView('overview')" id="tab-overview" class="tab-active py-3 px-1 text-sm transition-colors whitespace-nowrap flex-shrink-0">Overview</button>
+                <button onclick="switchView('schedule')" id="tab-schedule" class="tab-inactive py-3 px-1 text-sm transition-colors whitespace-nowrap flex-shrink-0">Schedule</button>
+                <button onclick="switchView('projects')" id="tab-projects" class="tab-inactive py-3 px-1 text-sm transition-colors whitespace-nowrap flex-shrink-0">Projects</button>
+                <button onclick="switchView('grading')" id="tab-grading" class="tab-inactive py-3 px-1 text-sm transition-colors whitespace-nowrap flex-shrink-0">Grading</button>
             </nav>
         </div>
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full">
         
         <!-- VIEW 0: COURSE OVERVIEW -->
         <div id="view-overview" class="animate-fade-in">
-            <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-                <div class="mb-10">
+            <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm mb-6">
+                <div class="mb-8">
                     <span class="bg-uit-light text-uit-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Introduction</span>
-                    <h2 class="text-3xl font-bold text-slate-900 mt-3">Welcome to NT549</h2>
-                    <p class="text-slate-600 mt-4 leading-relaxed text-lg">
-                        This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques. Emphasising practical implementation and conceptual understanding, the course prepares students to design and evaluate RL-based solutions for networked systems.
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-3">Welcome to NT549</h2>
+                    <p class="text-slate-600 mt-3 leading-relaxed text-base md:text-lg text-justify">
+                        This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques.
                     </p>
                 </div>
 
                 <!-- CLOs -->
-                <div class="mb-10">
-                     <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-uit-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Learning Outcomes (CLOs)
+                <div class="mb-8">
+                     <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-uit-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Learning Outcomes
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
-                            <h4 class="text-uit-primary font-bold mb-2">CLO1: Theory</h4>
-                            <p class="text-sm text-slate-600">Formulate network problems (routing, offloading, access control) as Markov Decision Processes (MDPs).</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                            <h4 class="text-uit-primary font-bold text-sm mb-1">CLO1: Theory</h4>
+                            <p class="text-xs md:text-sm text-slate-600">Formulate network problems as Markov Decision Processes (MDPs).</p>
                         </div>
-                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
-                            <h4 class="text-uit-primary font-bold mb-2">CLO2: Algorithms</h4>
-                            <p class="text-sm text-slate-600">Implement and tune fundamental RL algorithms (Q-Learning, DQN, PPO) using Python/PyTorch.</p>
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                            <h4 class="text-uit-primary font-bold text-sm mb-1">CLO2: Algorithms</h4>
+                            <p class="text-xs md:text-sm text-slate-600">Implement RL algorithms (DQN, PPO) using Python/PyTorch.</p>
                         </div>
-                         <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
-                            <h4 class="text-uit-primary font-bold mb-2">CLO3: Application</h4>
-                            <p class="text-sm text-slate-600">Design custom Gymnasium environments representing network scenarios.</p>
+                         <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                            <h4 class="text-uit-primary font-bold text-sm mb-1">CLO3: Application</h4>
+                            <p class="text-xs md:text-sm text-slate-600">Design custom Gymnasium environments for networks.</p>
                         </div>
-                        <div class="p-5 bg-slate-50 rounded-lg border border-slate-100 hover:border-uit-light transition">
-                            <h4 class="text-uit-primary font-bold mb-2">CLO4: Synthesis</h4>
-                            <p class="text-sm text-slate-600">Evaluate the trade-offs between RL-based control and traditional network protocols.</p>
+                        <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                            <h4 class="text-uit-primary font-bold text-sm mb-1">CLO4: Synthesis</h4>
+                            <p class="text-xs md:text-sm text-slate-600">Evaluate trade-offs between RL and traditional protocols.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- References -->
                 <div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-uit-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                        Course Textbooks & References
+                    <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-uit-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        Textbooks
                     </h3>
-                    <ul class="space-y-4">
-                        <li class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100">
-                             <div class="flex-shrink-0 w-12 h-16 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-xs">BOOK</div>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3 p-3 rounded-lg bg-white border border-slate-100 items-start">
+                             <div class="flex-shrink-0 w-8 h-10 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-[10px]">BOOK</div>
                              <div>
-                                 <h4 class="font-bold text-slate-800">Reinforcement Learning: An Introduction (2nd Ed)</h4>
-                                 <p class="text-sm text-slate-500">Richard S. Sutton and Andrew G. Barto</p>
+                                 <h4 class="font-bold text-slate-800 text-sm">Reinforcement Learning: An Introduction (2nd Ed)</h4>
+                                 <p class="text-xs text-slate-500">Sutton & Barto</p>
                              </div>
                         </li>
-                        <li class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100">
-                             <div class="flex-shrink-0 w-12 h-16 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-xs">BOOK</div>
+                        <li class="flex gap-3 p-3 rounded-lg bg-white border border-slate-100 items-start">
+                             <div class="flex-shrink-0 w-8 h-10 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-[10px]">BOOK</div>
                              <div>
-                                 <h4 class="font-bold text-slate-800">Mathematical Foundations of Reinforcement Learning</h4>
-                                 <p class="text-sm text-slate-500">Shiyu Zhao (Springer, 2025)</p>
+                                 <h4 class="font-bold text-slate-800 text-sm">Mathematical Foundations of RL</h4>
+                                 <p class="text-xs text-slate-500">Shiyu Zhao (2025)</p>
                              </div>
                         </li>
-                         <li class="flex gap-4 p-4 rounded-lg bg-white border border-slate-100">
-                             <div class="flex-shrink-0 w-12 h-16 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-xs">BOOK</div>
+                        <li class="flex gap-3 p-3 rounded-lg bg-white border border-slate-100 items-start">
+                             <div class="flex-shrink-0 w-8 h-10 bg-slate-200 rounded flex items-center justify-center text-slate-400 font-bold text-[10px]">BOOK</div>
                              <div>
-                                 <h4 class="font-bold text-slate-800">Deep Reinforcement Learning for Wireless Communications and Networking</h4>
-                                 <p class="text-sm text-slate-500">Hoang et al. (IEEE Press/Wiley, 2023)</p>
+                                 <h4 class="font-bold text-slate-800 text-sm">Deep Reinforcement Learning for Wireless Communications and Networking</h4>
+                                 <p class="text-xs text-slate-500">Hoang et al. (IEEE Press, 2023)</p>
                              </div>
                         </li>
                     </ul>
@@ -201,66 +194,65 @@
         </div>
 
         <!-- VIEW 1: SCHEDULE (Timeline + Detail) -->
-        <div id="view-schedule" class="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in hidden">
+        <div id="view-schedule" class="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-in hidden">
             <!-- Left: Timeline -->
-            <div class="lg:col-span-4 flex flex-col gap-4 h-[calc(100vh-12rem)] sticky top-36">
-                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm shrink-0">
-                    <h2 class="font-bold text-slate-800">Weekly Timeline</h2>
-                    <p class="text-xs text-slate-500">Navigate through the 15-week curriculum.</p>
+            <!-- Mobile Optimization: Restricted height on mobile so user sees there is content below -->
+            <div class="lg:col-span-4 flex flex-col gap-3 h-64 lg:h-[calc(100vh-12rem)] sticky lg:top-36">
+                <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm shrink-0 flex justify-between items-center lg:block">
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-sm lg:text-base">Weekly Timeline</h2>
+                        <p class="text-xs text-slate-500">Scroll to view all weeks</p>
+                    </div>
+                    <!-- Visual cue for mobile -->
+                    <span class="lg:hidden text-xs text-uit-primary font-medium">▼ Scroll</span>
                 </div>
-                <div class="custom-scroll overflow-y-auto pr-2 space-y-4 pb-10">
+                <div class="custom-scroll overflow-y-auto pr-2 space-y-2 pb-2 h-full bg-slate-50/50 rounded-lg">
                     <div id="syllabus-timeline"></div>
                 </div>
             </div>
 
             <!-- Right: Detail Panel + Project Lifecycle Instructions -->
-            <div class="lg:col-span-8 flex flex-col gap-6">
+            <div class="lg:col-span-8 flex flex-col gap-6" id="content-area">
                 
                 <!-- Weekly Detail Panel -->
-                <div id="detail-panel" class="bg-white rounded-xl border border-slate-200 shadow-sm min-h-[400px] transition-all duration-300">
+                <div id="detail-panel" class="bg-white rounded-xl border border-slate-200 shadow-sm min-h-[300px] transition-all duration-300">
                     <!-- Default Landing Content (When no week selected) -->
                     <div class="p-8 h-full flex flex-col items-center justify-center text-center text-slate-400">
-                        <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <h3 class="text-xl font-medium mb-2">Select a Week</h3>
-                        <p class="max-w-xs">Click on a week from the timeline on the left to view specific learning activities, readings, and labs.</p>
+                        <svg class="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <h3 class="text-lg font-medium mb-1">Select a Week</h3>
+                        <p class="text-sm max-w-xs">Tap a week from the list above to view details here.</p>
                     </div>
                 </div>
 
                 <!-- Project Lifecycle Instructions Box -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
-                    <div class="flex items-center gap-3 mb-6">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                    <div class="flex items-center gap-3 mb-4">
                          <div class="p-2 bg-uit-light rounded-lg text-uit-primary">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                          </div>
                          <div>
-                             <h3 class="text-xl font-bold text-slate-900">Project Lifecycle Guidelines</h3>
-                             <p class="text-xs text-slate-500">General steps for the Capstone Phase (Weeks 11-15)</p>
+                             <h3 class="text-lg font-bold text-slate-900">Project Guidelines</h3>
+                             <p class="text-xs text-slate-500">Capstone Phase (Weeks 11-15)</p>
                          </div>
                     </div>
                     
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 1: Proposal & Definition</h4>
-                            <p class="text-sm text-slate-600 mb-2">Teams must present their problem statement. Define the <strong>State Space</strong>, <strong>Action Space</strong>, and <strong>Reward Function</strong> clearly.</p>
-                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Deliverable: 1-page PDF</span>
+                            <h4 class="font-bold text-uit-primary text-xs uppercase mb-1">Phase 1: Proposal</h4>
+                            <p class="text-xs md:text-sm text-slate-600 mb-1">Define State, Action, Reward. Deliverable: 1-page PDF.</p>
                         </div>
                         <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 2: Environment Design</h4>
-                            <p class="text-sm text-slate-600 mb-2">Showcase a runnable <code>gymnasium</code> environment. A random agent must be able to interact without crashing.</p>
-                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Activity: Code Walkthrough</span>
+                            <h4 class="font-bold text-uit-primary text-xs uppercase mb-1">Phase 2: Environment</h4>
+                            <p class="text-xs md:text-sm text-slate-600 mb-1">Runnable <code>gymnasium</code> environment code.</p>
                         </div>
                         <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 3: Baselines</h4>
-                            <p class="text-sm text-slate-600 mb-2">Compare your RL agent against standard algorithms (e.g., Round Robin, OSPF, TCP Vegas). Show preliminary reward plots.</p>
+                            <h4 class="font-bold text-uit-primary text-xs uppercase mb-1">Phase 3: Baselines</h4>
+                            <p class="text-xs md:text-sm text-slate-600 mb-1">Compare RL vs Standard Algos (Round Robin, OSPF).</p>
                         </div>
-                        <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 4: Tuning & Optimization</h4>
-                            <p class="text-sm text-slate-600 mb-2">Address convergence issues. Discuss hyperparameter tuning (learning rate, discount factor) and reward shaping.</p>
-                        </div>
-                        <div class="lifecycle-step border-l-0 pl-8 relative">
-                            <div class="absolute left-[-0.4rem] top-1.5 w-3 h-3 bg-uit-primary rounded-full"></div>
-                            <h4 class="font-bold text-slate-900 text-sm uppercase mb-1">Phase 5: Final Defense</h4>
-                            <p class="text-sm text-slate-600">Final group presentation and live demo. Evaluation based on Complexity, Methodology, and Performance.</p>
+                        <div class="lifecycle-step border-l-0 pl-6 relative">
+                            <div class="absolute left-[-0.35rem] top-1.5 w-2.5 h-2.5 bg-uit-primary rounded-full"></div>
+                            <h4 class="font-bold text-slate-900 text-xs uppercase mb-1">Phase 5: Defense</h4>
+                            <p class="text-xs md:text-sm text-slate-600">Final presentation and live demo.</p>
                         </div>
                     </div>
                 </div>
@@ -270,49 +262,44 @@
 
         <!-- VIEW 2: CAPSTONE PROJECTS -->
         <div id="view-projects" class="hidden">
-            <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900">Capstone Projects</h2>
-                        <p class="text-slate-500 text-sm mt-1">Select a topic by domain or propose a custom problem.</p>
-                    </div>
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-6">
+                <div class="mb-4">
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-900">Capstone Projects</h2>
+                    <p class="text-slate-500 text-sm mt-1">Filter by domain to find a topic.</p>
                 </div>
 
-                <!-- Filter Buttons -->
-                <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-100" id="project-filters">
-                    <button class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('All', this)">All Projects</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('SDN', this)">SDN & Traffic</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Cloud', this)">Cloud & DC</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Edge', this)">Edge & MEC</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('IoT', this)">IoT</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Smart Home', this)">Smart Home</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Robotics', this)">Robotics</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Digital Twin', this)">Digital Twin</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Security', this)">Security</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('6G & Next-Gen', this)">6G & Next-Gen</button>
+                <!-- Filter Buttons (Scrollable on mobile) -->
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2" id="project-filters">
+                    <button class="filter-btn active px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('All', this)">All</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('SDN', this)">SDN</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('Cloud', this)">Cloud</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('Edge', this)">Edge</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('IoT', this)">IoT</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('Smart Home', this)">Smart Home</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('Robotics', this)">Robotics</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('Digital Twin', this)">Digital Twin</button>
+                    <button class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap flex-shrink-0" onclick="filterProjects('6G & Next-Gen', this)">6G</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="project-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" id="project-grid">
                 <!-- Projects injected by JS -->
             </div>
         </div>
 
         <!-- VIEW 3: GRADING & ANALYTICS -->
         <div id="view-grading" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Chart 1 -->
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-2">Assessment Weighting</h3>
-                    <p class="text-xs text-slate-500 mb-6">Final Grade Composition</p>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 mb-2">Assessment</h3>
                     <div class="chart-container">
                         <canvas id="assessmentChart"></canvas>
                     </div>
                 </div>
                 <!-- Chart 2 -->
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-2">Course Focus Area</h3>
-                    <p class="text-xs text-slate-500 mb-6">Weeks per Module</p>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 mb-2">Topic Distribution</h3>
                     <div class="chart-container">
                         <canvas id="moduleChart"></canvas>
                     </div>
@@ -321,38 +308,30 @@
 
             <!-- Grade Table -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
-                    <h3 class="font-bold text-slate-800">Detailed Assessment Criteria</h3>
-                </div>
-                <div class="p-6">
-                    <table class="w-full text-sm text-left text-slate-600">
+                <div class="p-4 overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-600 min-w-[300px]">
                         <thead class="text-xs text-slate-700 uppercase bg-slate-50">
                             <tr>
-                                <th class="px-6 py-3">Component</th>
-                                <th class="px-6 py-3">Weight</th>
-                                <th class="px-6 py-3">Details</th>
+                                <th class="px-4 py-3">Component</th>
+                                <th class="px-4 py-3">Weight</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white border-b hover:bg-slate-50">
-                                <td class="px-6 py-4 font-medium text-slate-900">Final Exam</td>
-                                <td class="px-6 py-4">50%</td>
-                                <td class="px-6 py-4">Theory, MDP Calculation, Algorithm Logic</td>
+                            <tr class="bg-white border-b">
+                                <td class="px-4 py-3 font-medium text-slate-900">Final Exam</td>
+                                <td class="px-4 py-3">50%</td>
                             </tr>
-                            <tr class="bg-white border-b hover:bg-slate-50">
-                                <td class="px-6 py-4 font-medium text-slate-900">Capstone Project</td>
-                                <td class="px-6 py-4">20%</td>
-                                <td class="px-6 py-4">Proposal, Code, Demo, Final Report</td>
+                            <tr class="bg-white border-b">
+                                <td class="px-4 py-3 font-medium text-slate-900">Capstone Project</td>
+                                <td class="px-4 py-3">20%</td>
                             </tr>
-                            <tr class="bg-white border-b hover:bg-slate-50">
-                                <td class="px-6 py-4 font-medium text-slate-900">Lab Exercises</td>
-                                <td class="px-6 py-4">20%</td>
-                                <td class="px-6 py-4">5 Labs (Python/Gymnasium/Stable-Baselines3)</td>
+                            <tr class="bg-white border-b">
+                                <td class="px-4 py-3 font-medium text-slate-900">Lab Exercises</td>
+                                <td class="px-4 py-3">20%</td>
                             </tr>
-                            <tr class="bg-white hover:bg-slate-50">
-                                <td class="px-6 py-4 font-medium text-slate-900">Attendance</td>
-                                <td class="px-6 py-4">10%</td>
-                                <td class="px-6 py-4">Active participation in workshops</td>
+                            <tr class="bg-white">
+                                <td class="px-4 py-3 font-medium text-slate-900">Attendance</td>
+                                <td class="px-4 py-3">10%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -368,23 +347,22 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
                 
                 <!-- 1. Course Identity (Left) -->
-                <div class="flex flex-col items-center md:items-start">
-                    <p class="text-2xl font-bold text-uit-primary tracking-tight">NT549</p>
-                    <p class="text-sm font-medium text-slate-600 italic mt-1">"Empowering the Next Generation of Intelligent Networks."</p>
-                    <p class="text-xs text-slate-400 mt-2">© 2026 VNUHCM-UIT</p>
+                <div class="flex flex-col items-center md:items-start order-2 md:order-1">
+                    <p class="text-xl md:text-2xl font-bold text-uit-primary tracking-tight">NT549</p>
+                    <p class="text-xs md:text-sm font-medium text-slate-600 italic mt-1">"Empowering the Next Generation of Intelligent Networks."</p>
+                    <p class="text-[10px] md:text-xs text-slate-400 mt-2">© 2026 VNUHCM-UIT</p>
                 </div>
 
                 <!-- 2. UIT Banner (Center) -->
-                <div class="flex justify-center">
-                    <img src="https://en.uit.edu.vn/sites/vi/files/banner_en.png" alt="UIT Banner" class="h-auto max-h-32 w-auto object-contain">
+                <div class="flex justify-center order-1 md:order-2">
+                    <img src="https://en.uit.edu.vn/sites/vi/files/banner_en.png" alt="UIT Banner" class="h-12 md:h-16 w-auto object-contain">
                 </div>
 
                 <!-- 3. Instructor Info (Right) -->
-                <div class="flex flex-col items-center md:items-end text-center md:text-right">
-                    <p class="font-bold text-slate-800 text-lg">Dr. Dang Van Huynh</p>
-                    <p class="text-sm text-slate-500">Department of Computer Network</p>
-                    <p class="text-sm text-slate-500">Faculty of Computer Networks and Communications</p>
-                    <a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline font-medium mt-1">danghv@uit.edu.vn</a>
+                <div class="flex flex-col items-center md:items-end text-center md:text-right order-3">
+                    <p class="font-bold text-slate-800 text-sm md:text-lg">Dr. Dang Van Huynh</p>
+                    <p class="text-xs md:text-sm text-slate-500">Department of Computer Network</p>
+                    <a href="mailto:danghv@uit.edu.vn" class="text-xs md:text-sm text-uit-primary hover:underline font-medium mt-1">danghv@uit.edu.vn</a>
                 </div>
 
             </div>
@@ -442,7 +420,7 @@
                     ]
                 }
             ],
-            // Expanded Project List - Now 40 Projects
+            // 40 Projects
             projects: [
                 // SDN & Traffic Engineering
                 {
@@ -713,7 +691,7 @@
             const container = document.getElementById('syllabus-timeline');
             courseData.modules.forEach(mod => {
                 const modEl = document.createElement('div');
-                modEl.className = "mb-6";
+                modEl.className = "mb-4";
                 modEl.innerHTML = `<h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">Module ${mod.id}: ${mod.title}</h3>`;
                 mod.weeks.forEach(week => {
                     const btn = document.createElement('button');
@@ -733,21 +711,27 @@
             panel.style.opacity = '0';
             setTimeout(() => {
                 panel.innerHTML = `
-                    <div class="p-8 h-full relative overflow-hidden">
+                    <div class="p-4 md:p-8 h-full relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><span class="text-9xl font-bold text-slate-900">${week.num}</span></div>
                         <div class="relative z-10">
                             <div class="flex items-center gap-2 mb-4"><span class="bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded">Module</span><span class="text-slate-500 text-sm font-medium uppercase">${modTitle}</span></div>
-                            <h2 class="text-3xl font-bold text-slate-800 mb-6">${week.title}</h2>
+                            <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-6">${week.title}</h2>
                             <div class="space-y-6">
-                                <div><h3 class="font-bold text-uit-primary mb-2 flex items-center gap-2">Activity Focus</h3><ul class="list-disc pl-5 space-y-1 text-slate-600">${week.theory.map(t => `<li>${t}</li>`).join('')}</ul></div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
-                                    <div class="bg-orange-50 p-4 rounded border border-orange-100"><span class="text-xs font-bold text-orange-600 uppercase">Preparation</span><p class="text-slate-800 font-medium">${week.reading}</p></div>
-                                    <div class="bg-blue-50 p-4 rounded border border-blue-100"><span class="text-xs font-bold text-blue-600 uppercase">Lab / Deliverable</span><p class="text-slate-800 font-medium">${week.lab}</p></div>
+                                <div><h3 class="font-bold text-uit-primary mb-2 flex items-center gap-2">Activity Focus</h3><ul class="list-disc pl-5 space-y-1 text-slate-600 text-sm md:text-base">${week.theory.map(t => `<li>${t}</li>`).join('')}</ul></div>
+                                <div class="grid grid-cols-1 gap-4 pt-4 border-t border-slate-100">
+                                    <div class="bg-orange-50 p-3 rounded border border-orange-100"><span class="text-xs font-bold text-orange-600 uppercase">Preparation</span><p class="text-slate-800 font-medium text-sm">${week.reading}</p></div>
+                                    <div class="bg-blue-50 p-3 rounded border border-blue-100"><span class="text-xs font-bold text-blue-600 uppercase">Lab / Deliverable</span><p class="text-slate-800 font-medium text-sm">${week.lab}</p></div>
                                 </div>
                             </div>
                         </div>
                     </div>`;
                 panel.style.opacity = '1';
+                
+                // Smart Scroll for Mobile
+                if (window.innerWidth < 1024) {
+                    const contentArea = document.getElementById('content-area');
+                    contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }, 150);
         }
 
@@ -769,7 +753,6 @@
         }
 
         function filterProjects(category, btnElement) {
-            // Update UI
             if (btnElement) {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btnElement.classList.add('active');
@@ -779,7 +762,7 @@
 
         function renderProjects(category) {
             const container = document.getElementById('project-grid');
-            container.innerHTML = ''; // Clear existing
+            container.innerHTML = '';
             
             const filtered = category === 'All' 
                 ? courseData.projects 
@@ -788,15 +771,15 @@
             filtered.forEach(p => {
                 const domainStyle = getDomainStyle(p.domain);
                 const card = document.createElement('div');
-                card.className = "bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition group flex flex-col h-full animate-fade-in";
+                card.className = "bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition group flex flex-col h-full animate-fade-in";
                 card.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="${domainStyle} text-xs font-bold px-2 py-1 rounded border">${p.domain}</span>
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="${domainStyle} text-[10px] font-bold px-2 py-1 rounded border uppercase tracking-wide">${p.domain}</span>
                     </div>
-                    <h3 class="font-bold text-slate-900 text-lg mb-2 leading-tight">${p.title}</h3>
-                    <p class="text-slate-600 text-sm mb-4 leading-relaxed flex-grow">${p.desc}</p>
-                    <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-50">
-                        ${p.tools.map(t => `<span class="text-xs bg-slate-50 text-slate-500 px-2 py-1 rounded border border-slate-100">${t}</span>`).join('')}
+                    <h3 class="font-bold text-slate-900 text-base leading-tight mb-2">${p.title}</h3>
+                    <p class="text-slate-600 text-xs md:text-sm mb-4 leading-relaxed flex-grow">${p.desc}</p>
+                    <div class="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-slate-50">
+                        ${p.tools.map(t => `<span class="text-[10px] bg-slate-50 text-slate-500 px-2 py-1 rounded border border-slate-100">${t}</span>`).join('')}
                     </div>
                 `;
                 container.appendChild(card);
@@ -805,16 +788,15 @@
 
         // 4. Charts
         function initCharts() {
-            // Check if Chart is defined before attempting to use it
             if (typeof Chart === 'undefined') {
                 console.error('Chart.js library is not loaded.');
                 return;
             }
-            new Chart(document.getElementById('assessmentChart'), { type: 'doughnut', data: { labels: ['Final Exam', 'Project', 'Labs', 'Attendance'], datasets: [{ data: [50, 20, 20, 10], backgroundColor: ['#005a8d', '#0ea5e9', '#38bdf8', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
-            new Chart(document.getElementById('moduleChart'), { type: 'bar', data: { labels: ['M1', 'M2', 'M3', 'M4', 'M5'], datasets: [{ label: 'Weeks', data: [3, 2, 2, 3, 5], backgroundColor: '#0ea5e9', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+            new Chart(document.getElementById('assessmentChart'), { type: 'doughnut', data: { labels: ['Final Exam', 'Project', 'Labs', 'Attendance'], datasets: [{ data: [50, 20, 20, 10], backgroundColor: ['#005a8d', '#0ea5e9', '#38bdf8', '#cbd5e1'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } } });
+            new Chart(document.getElementById('moduleChart'), { type: 'bar', data: { labels: ['M1', 'M2', 'M3', 'M4', 'M5'], datasets: [{ label: 'Weeks', data: [3, 2, 2, 3, 5], backgroundColor: '#0ea5e9', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { font: { size: 10 } } } } } });
         }
 
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
-</html>
+</html>Deep RL for Wireless Comms & Networking
