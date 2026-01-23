@@ -258,7 +258,7 @@
                             <p class="text-sm text-slate-600 mb-2">Address convergence issues. Discuss hyperparameter tuning (learning rate, discount factor) and reward shaping.</p>
                         </div>
                         <div class="lifecycle-step border-l-0 pl-8 relative">
-                            <div class="absolute left-[-0.4rem] top-1 w-3 h-3 bg-uit-primary rounded-full"></div>
+                            <div class="absolute left-[-0.4rem] top-1.5 w-3 h-3 bg-uit-primary rounded-full"></div>
                             <h4 class="font-bold text-slate-900 text-sm uppercase mb-1">Phase 5: Final Defense</h4>
                             <p class="text-sm text-slate-600">Final group presentation and live demo. Evaluation based on Complexity, Methodology, and Performance.</p>
                         </div>
@@ -284,8 +284,12 @@
                     <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('SDN', this)">SDN & Traffic</button>
                     <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Cloud', this)">Cloud & DC</button>
                     <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Edge', this)">Edge & MEC</button>
-                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('IoT', this)">IoT & Wireless</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('IoT', this)">IoT</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Smart Home', this)">Smart Home</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Robotics', this)">Robotics</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Digital Twin', this)">Digital Twin</button>
                     <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('Security', this)">Security</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium border" onclick="filterProjects('6G & Next-Gen', this)">6G & Next-Gen</button>
                 </div>
             </div>
 
@@ -378,8 +382,8 @@
                 <!-- 3. Instructor Info (Right) -->
                 <div class="flex flex-col items-center md:items-end text-center md:text-right">
                     <p class="font-bold text-slate-800 text-lg">Dr. Dang Van Huynh</p>
-                    <p class="text-sm text-slate-500">Deparment of Computer Networks</p>
-                    <p class="text-sm text-slate-500">Faculty of Computer Networks & Commmunications</p>
+                    <p class="text-sm text-slate-500">Dept. of Computer Networks</p>
+                    <p class="text-sm text-slate-500">Faculty of Computer Networks & Comm.</p>
                     <a href="mailto:danghv@uit.edu.vn" class="text-sm text-uit-primary hover:underline font-medium mt-1">danghv@uit.edu.vn</a>
                 </div>
 
@@ -438,8 +442,9 @@
                     ]
                 }
             ],
-            // Expanded Project List
+            // Expanded Project List - Now 40 Projects
             projects: [
+                // SDN & Traffic Engineering
                 {
                     title: "Intelligent SDN Routing",
                     desc: "Implement a Deep Q-Network (DQN) agent on a Ryu controller to optimize routing paths in Mininet, minimizing end-to-end delay under heavy traffic.",
@@ -453,17 +458,51 @@
                     domain: "SDN"
                 },
                 {
+                    title: "SDN Controller Load Balancing",
+                    desc: "Train a multi-agent RL system to balance control plane load across multiple SDN controllers in a large-scale WAN.",
+                    tools: ["Mininet", "Ray RLLib"],
+                    domain: "SDN"
+                },
+                {
+                    title: "QoS-Aware Video Routing",
+                    desc: "Prioritize video traffic streams dynamically using RL to maintain high MOS (Mean Opinion Score) during network congestion.",
+                    tools: ["Mininet", "FFmpeg", "PyTorch"],
+                    domain: "SDN"
+                },
+
+                // Cloud & Serverless
+                {
                     title: "Kubernetes Pod Autoscaling",
                     desc: "Create an RL-based Horizontal Pod Autoscaler (HPA) that predicts traffic bursts and scales microservices proactively.",
                     tools: ["SimPy", "Gymnasium"],
                     domain: "Cloud"
                 },
                 {
-                    title: "VM Placement Optimization",
-                    desc: "Solve the Virtual Machine placement problem (Bin Packing variant) using Policy Gradients to minimize active physical servers.",
-                    tools: ["Python", "CloudSim"],
+                    title: "Serverless Cold Start Optimization",
+                    desc: "Predict function invocations using RL to pre-warm serverless containers, minimizing cold start latency.",
+                    tools: ["OpenWhisk Sim", "Python"],
                     domain: "Cloud"
                 },
+                {
+                    title: "Microservice Chain Placement",
+                    desc: "Optimize the placement of dependent microservice chains across a cluster to minimize inter-service latency.",
+                    tools: ["Python", "Kubernetes Sim"],
+                    domain: "Cloud"
+                },
+                {
+                    title: "Spot Instance Bidding Strategy",
+                    desc: "Train an agent to bid optimally for cloud spot instances (AWS/GCP) to minimize cost while maintaining availability.",
+                    tools: ["Python", "Pandas"],
+                    domain: "Cloud"
+                },
+                {
+                    title: "Data Center Cooling Control",
+                    desc: "Control HVAC systems in a simulated data center to minimize Power Usage Effectiveness (PUE) while maintaining safe temperatures.",
+                    tools: ["EnergyPlus", "Gymnasium"],
+                    domain: "Cloud"
+                },
+
+                // Edge & Fog
                 {
                     title: "MEC Task Offloading",
                     desc: "Design an agent for mobile devices to decide whether to process tasks locally or offload to an Edge Server based on battery constraints.",
@@ -477,6 +516,20 @@
                     domain: "Edge"
                 },
                 {
+                    title: "Fog Computing Resource Allocation",
+                    desc: "Dynamically allocate CPU and RAM resources in a Fog layer to handle bursty IoT data streams.",
+                    tools: ["iFogSim", "Python"],
+                    domain: "Edge"
+                },
+                {
+                    title: "Collaborative Edge Caching",
+                    desc: "Coordinate multiple edge servers to cache popular content cooperatively, reducing backhaul traffic.",
+                    tools: ["Python", "Gymnasium"],
+                    domain: "Edge"
+                },
+
+                // IoT & Wireless
+                {
                     title: "Energy-Harvesting IoT Scheduling",
                     desc: "Develop a policy for an IoT sensor to schedule data transmission based on predicted solar energy harvesting.",
                     tools: ["Python", "Custom Env"],
@@ -488,6 +541,92 @@
                     tools: ["NS-3", "Python"],
                     domain: "IoT"
                 },
+                {
+                    title: "Underwater Acoustic Routing",
+                    desc: "Optimize routing in an underwater sensor network with high latency and error rates using Q-Learning.",
+                    tools: ["Python", "SimPy"],
+                    domain: "IoT"
+                },
+                {
+                    title: "UAV Data Collection Path Planning",
+                    desc: "Plan the trajectory of a UAV to collect data from ground IoT sensors with minimal flight time.",
+                    tools: ["Python", "Gymnasium"],
+                    domain: "IoT"
+                },
+
+                // Smart Home & Green IoT
+                {
+                    title: "Smart HVAC Energy Optimization",
+                    desc: "Train an agent to control a home thermostat, balancing thermal comfort (PPD) against energy cost under dynamic pricing.",
+                    tools: ["Python", "Sinergym"],
+                    domain: "Smart Home"
+                },
+                {
+                    title: "Home Energy Management (HEMS)",
+                    desc: "Optimize the charge/discharge cycles of a home battery storage system with solar PV to maximize self-consumption.",
+                    tools: ["Python", "Gymnasium"],
+                    domain: "Smart Home"
+                },
+                {
+                    title: "Adaptive Smart Lighting",
+                    desc: "Learn user occupancy patterns to dim or switch off lights automatically, maximizing energy savings.",
+                    tools: ["Python", "SimPy"],
+                    domain: "Smart Home"
+                },
+                {
+                    title: "Smart Plug Load Scheduling",
+                    desc: "Schedule deferrable appliances (washing machine, EV charger) to off-peak hours using RL.",
+                    tools: ["Python", "Pandas"],
+                    domain: "Smart Home"
+                },
+
+                // Robotics
+                {
+                    title: "Warehouse Robot Path Planning",
+                    desc: "Train a mobile robot to navigate a warehouse grid, avoiding static obstacles and other moving agents to fetch items.",
+                    tools: ["PyBullet", "Gymnasium"],
+                    domain: "Robotics"
+                },
+                {
+                    title: "UAV Swarm Coverage",
+                    desc: "Coordinate a swarm of drones to maximize area coverage for search and rescue operations using Multi-Agent RL.",
+                    tools: ["PettingZoo", "Python"],
+                    domain: "Robotics"
+                },
+                {
+                    title: "Robotic Arm Manipulation",
+                    desc: "Train a robotic arm to grasp and stack objects of varying shapes using Proximal Policy Optimization (PPO).",
+                    tools: ["MuJoCo", "Stable-Baselines3"],
+                    domain: "Robotics"
+                },
+                {
+                    title: "Sim2Real Mobile Navigation",
+                    desc: "Train a robot navigation policy in simulation and test its robustness to noise for eventual real-world deployment.",
+                    tools: ["Unity ML-Agents"],
+                    domain: "Robotics"
+                },
+
+                // Digital Twin
+                {
+                    title: "Digital Twin Network Synchronization",
+                    desc: "Optimize the update frequency of a Digital Twin to maintain synchronization with the physical network while minimizing bandwidth.",
+                    tools: ["Mininet", "Python"],
+                    domain: "Digital Twin"
+                },
+                {
+                    title: "Predictive Maintenance via Digital Twin",
+                    desc: "Use a Digital Twin of a server rack to predict failures and schedule maintenance using RL to minimize downtime.",
+                    tools: ["Python", "Scikit-learn"],
+                    domain: "Digital Twin"
+                },
+                {
+                    title: "Digital Twin Calibration",
+                    desc: "Automatically tune the parameters of a Digital Twin simulation to match real-world observations using RL.",
+                    tools: ["Python", "Gymnasium"],
+                    domain: "Digital Twin"
+                },
+
+                // Security
                 {
                     title: "Intrusion Detection System (IDS)",
                     desc: "Train an agent on the NSL-KDD dataset to classify network flows as 'Benign' or 'Attack', adapting to changing patterns.",
@@ -501,16 +640,42 @@
                     domain: "Security"
                 },
                 {
-                    title: "Adaptive Bitrate Streaming (ABR)",
-                    desc: "Train a PPO agent to dynamically select video bitrates (360p, 720p, 1080p) to maximize QoE while minimizing rebuffering.",
-                    tools: ["Python Sim", "Stable-Baselines3"],
-                    domain: "Multimedia"
-                },
-                {
                     title: "Anti-Jamming Frequency Hopping",
                     desc: "Simulate a wireless transmitter using Q-Learning to learn optimal frequency hopping patterns to evade a dynamic jammer.",
                     tools: ["NumPy", "Matplotlib"],
                     domain: "Security"
+                },
+                {
+                    title: "Deception Strategy for Cyber Defense",
+                    desc: "Use RL to deploy honeypots dynamically to deceive and trap attackers in a simulated corporate network.",
+                    tools: ["CyberBattleSim"],
+                    domain: "Security"
+                },
+
+                // 6G & Next-Gen
+                {
+                    title: "Network Slicing Resource Allocation",
+                    desc: "Dynamically allocate bandwidth and compute resources to different 5G/6G slices (eMBB, URLLC, mMTC) to meet SLAs.",
+                    tools: ["Python", "Gymnasium"],
+                    domain: "6G & Next-Gen"
+                },
+                {
+                    title: "Satellite Constellation Routing",
+                    desc: "Optimize packet routing across a dynamic LEO satellite constellation (like Starlink) to minimize latency.",
+                    tools: ["Hypatia", "Python"],
+                    domain: "6G & Next-Gen"
+                },
+                {
+                    title: "Federated Learning Client Selection",
+                    desc: "Use an RL agent to select the best subset of clients for Federated Learning aggregation to minimize training time.",
+                    tools: ["PyTorch", "Flower"],
+                    domain: "6G & Next-Gen"
+                },
+                {
+                    title: "Reconfigurable Intelligent Surfaces (RIS)",
+                    desc: "Control the phase shifts of an RIS to maximize the signal-to-noise ratio (SNR) for a 6G user.",
+                    tools: ["Python", "Matlab"],
+                    domain: "6G & Next-Gen"
                 }
             ]
         };
@@ -594,7 +759,11 @@
                 'Edge': 'bg-orange-100 text-orange-700 border-orange-200',
                 'Security': 'bg-red-100 text-red-700 border-red-200',
                 'IoT': 'bg-emerald-100 text-emerald-700 border-emerald-200',
-                'Multimedia': 'bg-pink-100 text-pink-700 border-pink-200'
+                'Multimedia': 'bg-pink-100 text-pink-700 border-pink-200',
+                'Robotics': 'bg-stone-100 text-stone-700 border-stone-200',
+                'Smart Home': 'bg-lime-100 text-lime-700 border-lime-200',
+                '6G & Next-Gen': 'bg-cyan-100 text-cyan-700 border-cyan-200',
+                'Digital Twin': 'bg-teal-100 text-teal-700 border-teal-200'
             };
             return styles[domain] || 'bg-slate-100 text-slate-700 border-slate-200';
         }
@@ -614,7 +783,7 @@
             
             const filtered = category === 'All' 
                 ? courseData.projects 
-                : courseData.projects.filter(p => p.domain.includes(category) || (category === 'IoT' && p.domain === 'Multimedia')); // Include multimedia in IoT/Wireless for simplicity or keep separate
+                : courseData.projects.filter(p => p.domain.includes(category) || (category === 'IoT' && p.domain === 'Multimedia')); 
 
             filtered.forEach(p => {
                 const domainStyle = getDomainStyle(p.domain);
