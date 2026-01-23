@@ -130,8 +130,7 @@
                     <span class="bg-uit-light text-uit-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Introduction</span>
                     <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-3">Welcome to NT549</h2>
                     <p class="text-slate-600 mt-3 leading-relaxed text-base md:text-lg text-justify">
-                        This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques.
-                    </p>
+                        This course introduces the fundamental principles and techniques of Reinforcement Learning (RL) with a focus on applications in computer networks and communications. Students will learn how RL agents make decisions through interaction with dynamic environments, and how to implement RL algorithms such as Q-learning, Deep Q-Networks (DQN), policy gradient methods, and actor–critic techniques. Emphasising practical implementation and conceptual understanding, the course prepares students to design and evaluate RL-based solutions for networked systems.                    </p>
                 </div>
 
                 <!-- CLOs -->
@@ -224,35 +223,41 @@
                     </div>
                 </div>
 
-                <!-- Project Lifecycle Instructions Box -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                    <div class="flex items-center gap-3 mb-4">
+                <!-- Project Lifecycle Instructions Box (Revised) -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 md:p-8">
+                    <div class="flex items-center gap-3 mb-6">
                          <div class="p-2 bg-uit-light rounded-lg text-uit-primary">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                          </div>
                          <div>
-                             <h3 class="text-lg font-bold text-slate-900">Project Guidelines</h3>
-                             <p class="text-xs text-slate-500">Capstone Phase (Weeks 11-15)</p>
+                             <h3 class="text-xl font-bold text-slate-900">Project Lifecycle Guidelines</h3>
+                             <p class="text-xs text-slate-500">General steps for the Capstone Phase (Weeks 11-15)</p>
                          </div>
                     </div>
                     
-                    <div class="space-y-4">
+                    <div class="space-y-6">
                         <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-xs uppercase mb-1">Phase 1: Proposal</h4>
-                            <p class="text-xs md:text-sm text-slate-600 mb-1">Define State, Action, Reward. Deliverable: 1-page PDF.</p>
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 1: Proposal & Definition</h4>
+                            <p class="text-sm text-slate-600 mb-2">Teams must present their problem statement. Define the <strong>State Space</strong>, <strong>Action Space</strong>, and <strong>Reward Function</strong> clearly.</p>
+                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Deliverable: 1-page PDF</span>
                         </div>
                         <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-xs uppercase mb-1">Phase 2: Environment</h4>
-                            <p class="text-xs md:text-sm text-slate-600 mb-1">Runnable <code>gymnasium</code> environment code.</p>
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 2: Environment Design</h4>
+                            <p class="text-sm text-slate-600 mb-2">Showcase a runnable <code>gymnasium</code> environment. A random agent must be able to interact without crashing.</p>
+                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Activity: Code Walkthrough</span>
                         </div>
                         <div class="lifecycle-step">
-                            <h4 class="font-bold text-uit-primary text-xs uppercase mb-1">Phase 3: Baselines</h4>
-                            <p class="text-xs md:text-sm text-slate-600 mb-1">Compare RL vs Standard Algos (Round Robin, OSPF).</p>
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 3: Baselines</h4>
+                            <p class="text-sm text-slate-600 mb-2">Compare your RL agent against standard algorithms (e.g., Round Robin, OSPF, TCP Vegas). Show preliminary reward plots.</p>
                         </div>
-                        <div class="lifecycle-step border-l-0 pl-6 relative">
-                            <div class="absolute left-[-0.35rem] top-1.5 w-2.5 h-2.5 bg-uit-primary rounded-full"></div>
-                            <h4 class="font-bold text-slate-900 text-xs uppercase mb-1">Phase 5: Defense</h4>
-                            <p class="text-xs md:text-sm text-slate-600">Final presentation and live demo.</p>
+                        <div class="lifecycle-step">
+                            <h4 class="font-bold text-uit-primary text-sm uppercase mb-1">Phase 4: Tuning & Optimization</h4>
+                            <p class="text-sm text-slate-600 mb-2">Address convergence issues. Discuss hyperparameter tuning (learning rate, discount factor) and reward shaping.</p>
+                        </div>
+                        <div class="lifecycle-step border-l-0 pl-8 relative">
+                            <div class="absolute left-[-0.4rem] top-1.5 w-3 h-3 bg-uit-primary rounded-full"></div>
+                            <h4 class="font-bold text-slate-900 text-sm uppercase mb-1">Phase 5: Final Defense</h4>
+                            <p class="text-sm text-slate-600">Final group presentation and live demo. Evaluation based on Complexity, Methodology, and Performance.</p>
                         </div>
                     </div>
                 </div>
